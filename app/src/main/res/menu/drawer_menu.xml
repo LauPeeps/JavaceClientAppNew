@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" tools:showIn="navigation_view">
+
+
+    <group android:checkableBehavior="single">
+
+
+        <item android:id="@+id/profile"
+            android:icon="@drawable/ic_person"
+            android:title="Profile"/>
+
+        <item android:id="@+id/progress"
+            android:icon="@drawable/ic_progress"
+            android:title="Progress"/>
+
+        <item android:id="@+id/quiz"
+            android:icon="@drawable/ic_quiz"
+            android:title="Quiz"/>
+
+        <item android:id="@+id/forum"
+            android:icon="@drawable/ic_forum"
+            android:title="Forum"/>
+
+        <item android:id="@+id/resources"
+            android:icon="@drawable/ic_resources"
+            android:title="Resources"/>
+
+        <item android:id="@+id/leaderboard"
+            android:icon="@drawable/ic_leaderboard"
+            android:title="Leaderboard"/>
+
+        <item android:id="@+id/feedback"
+            android:icon="@drawable/ic_quiz"
+            android:title="Feedback"/>
+
+        <item android:id="@+id/settings"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings"/>
+
+        <item android:id="@+id/logout"
+            android:icon="@drawable/ic_logout"
+            android:title="Logout"/>
+
+
+
+    </group>
+
+</menu>

@@ -103,7 +103,7 @@ public class Questions extends AppCompatActivity implements View.OnClickListener
                         String questions_exist = question_list_document.getString("QNO");
 
                         for (int i = 0; i < Integer.valueOf(questions_exist); i++) {
-                            String question_id = question_list_document.getString("Q" + String.valueOf(i + 1) + "_ID");
+                            String question_id = question_list_document.getString("Q" + String.valueOf(i + 1) + "_Id");
 
                             QueryDocumentSnapshot queryDocumentSnapshot = document_list.get(question_id);
 
