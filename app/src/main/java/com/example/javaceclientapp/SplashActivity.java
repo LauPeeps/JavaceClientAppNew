@@ -27,7 +27,6 @@ public class SplashActivity extends AppCompatActivity {
     public static List<CategoryModel> list = new ArrayList<>();
     public static int category_index = 0;
     FirebaseFirestore firestore;
-
     Animation animation;
     ImageView image;
     @Override
@@ -70,7 +69,8 @@ public class SplashActivity extends AppCompatActivity {
                             String categoryId = documentSnapshot.getString("Module"+String.valueOf(i) + "_Id");
                             list.add(new CategoryModel(categoryId, categoryName));
                         }
-                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+
+                        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                         startActivity(intent);
                         SplashActivity.this.finish();
                     }
