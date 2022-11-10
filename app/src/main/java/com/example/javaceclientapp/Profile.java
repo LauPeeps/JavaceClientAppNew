@@ -59,7 +59,7 @@ public class Profile extends AppCompatActivity {
     FirebaseUser firebaseUser;
     String storagePath = "Users_Profile_Cover_image/";
     String uid;
-    ShapeableImageView set;
+    ImageView set;
     TextView profile, editName, editPassword;
     ProgressDialog progressDialog;
     String cameraPermission[];

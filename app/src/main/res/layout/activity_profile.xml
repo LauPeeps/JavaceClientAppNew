@@ -29,12 +29,20 @@
         app:layout_constraintBottom_toTopOf="@+id/toolbar"
         tools:context=".Profile">
 
-        <com.google.android.material.imageview.ShapeableImageView
+        <androidx.cardview.widget.CardView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:cardCornerRadius="100dp"
+            android:layout_gravity="center"
+            >
+
+        <ImageView
             android:id="@+id/set_profile_image"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/username"
