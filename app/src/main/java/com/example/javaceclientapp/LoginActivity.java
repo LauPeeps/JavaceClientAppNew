@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
-                Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "No account exist", Toast.LENGTH_LONG).show();
             }
         });
     }

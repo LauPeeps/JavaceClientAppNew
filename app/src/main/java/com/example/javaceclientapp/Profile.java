@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
@@ -121,6 +122,14 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        editName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressDialog.setMessage("Change name");
+                showNameDialog("name");
             }
         });
 
@@ -428,5 +437,77 @@ public class Profile extends AppCompatActivity {
             }
         });
     }
+
+    private void showNameDialog(final String key) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Update " + key);
+
+        // creating a layout to write the new name
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(10, 10, 10, 10);
+        EditText editText = new EditText(this);
+        editText.setHint("Enter " + key);
+        layout.addView(editText);
+        builder.setView(layout);
+
+        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                 String value = editText.getText().toString().trim();
+                if (!TextUtils.isEmpty(value)) {
+                    progressDialog.show();
+
+                    // Here we are updating the new name
+                    HashMap<String, Object> result = new HashMap<>();
+                    result.put(key, value);
+                    databaseReference.child(firebaseUser.getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            progressDialog.dismiss();
+
+                            // after updated we will show updated
+                            Toast.makeText(Profile.this, " Name updated successfully ", Toast.LENGTH_LONG).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(Profile.this, "Unable to update your name", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    if (key.equals("name")) {
+                        final DatabaseReference databaser = FirebaseDatabase.getInstance().getReference("Posts");
+                        Query query = databaser.orderByChild("uid").equalTo(uid);
+                        query.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                    String child = databaser.getKey();
+                                    dataSnapshot1.getRef().child("userName").setValue(value);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                } else {
+                    Toast.makeText(Profile.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                progressDialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
 
 }
