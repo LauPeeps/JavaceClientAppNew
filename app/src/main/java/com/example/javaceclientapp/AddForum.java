@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,7 +51,7 @@ import java.util.Objects;
 
 public class AddForum extends AppCompatActivity {
 
-    EditText forumTitle, forumDescription;
+    EditText forumTitle, forumDescription, forumUploader;
     private static final int CAMERA_REQUEST = 100;
     private static final int STORAGE_REQUEST = 200;
     private static final int IMAGEPICK_GALLERY_REQUEST = 300;
@@ -61,9 +62,6 @@ public class AddForum extends AppCompatActivity {
     ImageView imageView;
     FirebaseAuth firebaseAuth;
     Button uploadBtn;
-    TextView editName;
-
-    String name, email, profilePic, userId;
     DatabaseReference databaseReference;
     Uri imageUri = null;
 
@@ -83,6 +81,7 @@ public class AddForum extends AppCompatActivity {
 
         forumTitle = findViewById(R.id.forumTitle);
         forumDescription = findViewById(R.id.forumDescription);
+        forumUploader = findViewById(R.id.forumCreator);
         imageView = findViewById(R.id.image);
 
 
@@ -94,24 +93,10 @@ public class AddForum extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
-        Query query = databaseReference.orderByChild("email").equalTo(email);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    name = dataSnapshot.child("name").getValue().toString();
-                    email = "" + dataSnapshot.child("email").getValue();
-                    profilePic = "" + dataSnapshot.child("image").getValue().toString();
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
 
 
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +111,7 @@ public class AddForum extends AppCompatActivity {
             public void onClick(View view) {
                 String title = "" + forumTitle.getText().toString().trim();
                 String description = "" + forumDescription.getText().toString().trim();
-
+                String name = "" + forumUploader.getText().toString().trim();
                 if (TextUtils.isEmpty(title)) {
                     forumTitle.setError("Please enter forum title");
                     return;
@@ -140,7 +125,7 @@ public class AddForum extends AppCompatActivity {
                     return;
                 }
                 else {
-                    uploadForum(title, description);
+                    uploadForum(title, description, name);
                 }
             }
 
@@ -238,7 +223,7 @@ public class AddForum extends AppCompatActivity {
     }
 
 
-    private void uploadForum(String title, String description) {
+    private void uploadForum(String title, String description, String name) {
         // show the progress dialog box
         progressDialog.show();
         final String timestamp = String.valueOf(System.currentTimeMillis());
@@ -247,6 +232,7 @@ public class AddForum extends AppCompatActivity {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] data = byteArrayOutputStream.toByteArray();
+
 
         // initialising the storage reference for updating the data
         StorageReference storageReference1 = FirebaseStorage.getInstance().getReference().child(filePathName);
@@ -258,12 +244,14 @@ public class AddForum extends AppCompatActivity {
                 while (!uriTask.isSuccessful()) ;
                 String downloadUri = uriTask.getResult().toString();
                 if (uriTask.isSuccessful()) {
-                    // if task is successful the update the data into firebase
+                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                    String userId = firebaseUser.getUid();
+                    String email = firebaseUser.getEmail();
+
                     HashMap<Object, String> hashMap = new HashMap<>();
+                    hashMap.put("name", name);
                     hashMap.put("uid", userId);
-                    hashMap.put("userName", name);
-                    hashMap.put("userEmail", email);
-                    hashMap.put("userProfilePic", profilePic);
+                    hashMap.put("email", email);
                     hashMap.put("title", title);
                     hashMap.put("description", description);
                     hashMap.put("userImage", downloadUri);

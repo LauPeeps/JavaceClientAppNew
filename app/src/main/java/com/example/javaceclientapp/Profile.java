@@ -484,7 +484,7 @@ public class Profile extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                     String child = databaser.getKey();
-                                    dataSnapshot1.getRef().child("userName").setValue(value);
+                                    dataSnapshot1.getRef().child("name").setValue(value);
                                 }
                             }
 

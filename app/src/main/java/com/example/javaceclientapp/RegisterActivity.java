@@ -94,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
                     hashMap.put("onlineStatus", "online");
                     hashMap.put("typingTo", "noOne");
                     hashMap.put("image", "");
-                    
+
                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://javacemahman-10e8a-default-rtdb.firebaseio.com/");
                     DatabaseReference databaseReference = firebaseDatabase.getReference("Users");
                     databaseReference.child(uid).setValue(hashMap);
