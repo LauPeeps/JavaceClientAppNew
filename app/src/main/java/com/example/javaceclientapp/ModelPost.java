@@ -5,10 +5,11 @@ public class ModelPost {
     public ModelPost() {
     }
 
-    String name, dp, uid, email, title, description, userImage, timePosted, likes, comments;
+    String image, name, dp, uid, email, title, description, userImage, timePosted, likes, comments;
 
 
-    public ModelPost(String name, String dp, String uid, String email, String title, String description, String userImage, String timePosted, String likes, String comments) {
+    public ModelPost(String image,String name, String dp, String uid, String email, String title, String description, String userImage, String timePosted, String likes, String comments) {
+        this.image = image;
         this.name = name;
         this.dp = dp;
         this.uid = uid;
@@ -19,6 +20,14 @@ public class ModelPost {
         this.timePosted = timePosted;
         this.likes = likes;
         this.comments = comments;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getName() {

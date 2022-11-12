@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:cardBackgroundColor="#EFE6E6"
+    app:cardBackgroundColor="#F8F4F4"
     app:cardCornerRadius="3dp"
-    app:cardElevation="3dp"
+    app:cardElevation="8dp"
     app:cardUseCompatPadding="true"
     app:contentPadding="5dp">
 
@@ -56,6 +56,7 @@
         </LinearLayout>
 
         <TextView
+            android:layout_marginTop="16dp"
             android:id="@+id/forumTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,7 +101,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#F5F0F0" />
+            android:background="#CDAFAF" />
 
         <LinearLayout
             android:layout_width="match_parent"
