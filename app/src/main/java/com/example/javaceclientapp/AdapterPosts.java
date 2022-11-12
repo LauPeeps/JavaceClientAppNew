@@ -135,10 +135,11 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.javaceclienta
                 showMoreOptions(holder.more, uid, myuid, timePosted, userImage);
             }
         });
-        holder.comments.setOnClickListener(new View.OnClickListener() {
+        holder.commentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ForumDetails.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("pid", timePosted);
                 context.startActivity(intent);
             }
