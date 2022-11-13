@@ -178,12 +178,12 @@ public class Profile extends AppCompatActivity {
 
     private void showPasswordDialog() {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_update_password, null);
-        final EditText oldpass = view.findViewById(R.id.oldPass);
-        final EditText newpass = view.findViewById(R.id.newPass);
+        EditText oldpass = view.findViewById(R.id.oldPass);
+        EditText newpass = view.findViewById(R.id.newPass);
         Button editpass = view.findViewById(R.id.updatePass);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(view);
-        final AlertDialog dialog = builder.create();
+        AlertDialog dialog = builder.create();
         dialog.show();
         editpass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,7 +206,7 @@ public class Profile extends AppCompatActivity {
 
     private void updatePassword(String oldp, String newp) {
         progressDialog.show();
-        final FirebaseUser user = firebaseAuth.getCurrentUser();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
         AuthCredential authCredential = EmailAuthProvider.getCredential(user.getEmail(), oldp);
         user.reauthenticate(authCredential)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -393,7 +393,7 @@ public class Profile extends AppCompatActivity {
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, IMAGEPICK_GALLERY_REQUEST);
     }
-    private void uploadProfileCoverPhoto(final Uri uri) {
+    private void uploadProfileCoverPhoto(Uri uri) {
         progressDialog.show();
 
         String filepathname = storagePath + "" + profileOrCoverPhoto + "_" + firebaseUser.getUid();
@@ -405,7 +405,7 @@ public class Profile extends AppCompatActivity {
                 while (!uriTask.isSuccessful()) ;
 
                 // We will get the url of our image using uritask
-                final Uri downloadUri = uriTask.getResult();
+                Uri downloadUri = uriTask.getResult();
                 if (uriTask.isSuccessful()) {
 
                     // updating our image url into the realtime database
@@ -438,7 +438,7 @@ public class Profile extends AppCompatActivity {
         });
     }
 
-    private void showNameDialog(final String key) {
+    private void showNameDialog(String key) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Update " + key);
 
@@ -454,7 +454,7 @@ public class Profile extends AppCompatActivity {
         builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                 String value = editText.getText().toString().trim();
+                String value = editText.getText().toString().trim();
                 if (!TextUtils.isEmpty(value)) {
                     progressDialog.show();
 
@@ -467,17 +467,17 @@ public class Profile extends AppCompatActivity {
                             progressDialog.dismiss();
 
                             // after updated we will show updated
-                            Toast.makeText(Profile.this, " Name updated successfully ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Profile.this, "Name updated", Toast.LENGTH_LONG).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(Profile.this, "Unable to update your name", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Profile.this, "Unable to update name", Toast.LENGTH_LONG).show();
                         }
                     });
                     if (key.equals("name")) {
-                        final DatabaseReference databaser = FirebaseDatabase.getInstance().getReference("Posts");
+                        DatabaseReference databaser = FirebaseDatabase.getInstance().getReference("Posts");
                         Query query = databaser.orderByChild("uid").equalTo(uid);
                         query.addValueEventListener(new ValueEventListener() {
                             @Override
@@ -495,7 +495,7 @@ public class Profile extends AppCompatActivity {
                         });
                     }
                 } else {
-                    Toast.makeText(Profile.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Profile.this, "Unable to update name", Toast.LENGTH_LONG).show();
                 }
             }
         });

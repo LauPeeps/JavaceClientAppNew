@@ -43,7 +43,7 @@ public class AdapterComment extends RecyclerView.Adapter<com.example.javaceclien
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         String uid = list.get(position).getUid();
-        String name = list.get(position).getName();
+        String name = list.get(position).getCommenter();
         String email = list.get(position).getEmail();
         final String cid = list.get(position).getCommentId();
         String comment = list.get(position).getComment();

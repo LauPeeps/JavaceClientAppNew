@@ -92,8 +92,8 @@ public class RegisterActivity extends AppCompatActivity {
                             assert firebaseUsers != null;
                             String uid = firebaseUsers.getUid();
                             HashMap<Object, String> hashMap = new HashMap<>();
-                            hashMap.put("email", getUsername);
-                            hashMap.put("name", getEmail);
+                            hashMap.put("email", getEmail);
+                            hashMap.put("name", getUsername);
                             hashMap.put("uid", uid);
                             hashMap.put("user", "yes");
                             hashMap.put("image", "");

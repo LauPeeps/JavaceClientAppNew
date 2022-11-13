@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,6 +54,7 @@ public class ForumDetails extends AppCompatActivity {
     List<ModelComment> commentShow;
     AdapterComment adapterComment;
     ProgressDialog progressDialog;
+    FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,7 @@ public class ForumDetails extends AppCompatActivity {
 
         postId = getIntent().getStringExtra("pid");
 
+        firebaseAuth = FirebaseAuth.getInstance();
 
         userName = findViewById(R.id.userName);
         userTime = findViewById(R.id.userTime);
@@ -75,7 +78,6 @@ public class ForumDetails extends AppCompatActivity {
         moreBtn = findViewById(R.id.moreBtn);
 
         forumImage = findViewById(R.id.forumImage);
-        imageInComment = findViewById(R.id.imageInComment);
 
         recyclerView = findViewById(R.id.recycleComment);
 
@@ -147,13 +149,15 @@ public class ForumDetails extends AppCompatActivity {
         progressDialog.show();
         String timestamp = String.valueOf(System.currentTimeMillis());
         DatabaseReference datarf = FirebaseDatabase.getInstance().getReference("Posts").child(postId).child("Comments");
+
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("commentId", timestamp);
         hashMap.put("comment", comment);
         hashMap.put("timePosted", timestamp);
         hashMap.put("uid", myuid);
         hashMap.put("email", myemail);
-        hashMap.put("name", myname);
+        hashMap.put("commenter", myname);
+
         datarf.child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {

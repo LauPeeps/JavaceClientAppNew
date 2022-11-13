@@ -70,7 +70,7 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.javaceclienta
         String description = modelPosts.get(position).getDescription();
         String userImage = modelPosts.get(position).getUserImage();
         String timePosted = modelPosts.get(position).getTimePosted();
-        String pid = modelPosts.get(position).getTimePosted();
+        String image = modelPosts.get(position).getImage();
         String likes = modelPosts.get(position).getLikes();
         String comments = modelPosts.get(position).getComments();
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
@@ -86,6 +86,13 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.javaceclienta
         setLikes(holder, timePosted);
 
 
+        holder.profilePic.setVisibility(View.VISIBLE);
+
+        try{
+            Glide.with(context).load(image).into(holder.profilePic);
+        } catch (Exception e) {
+
+        }
         holder.image.setVisibility(View.VISIBLE);
         try {
             Glide.with(context).load(userImage).into(holder.image);
@@ -213,13 +220,14 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.javaceclienta
     }
 
     class MyHolder extends RecyclerView.ViewHolder {
-        ImageView image;
+        ImageView image, profilePic;
         TextView name, time, title, description, likes, comments;
         ImageButton more;
         Button likeBtn, commentBtn;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
+            profilePic = itemView.findViewById(R.id.image);
             image = itemView.findViewById(R.id.forumImage);
             name = itemView.findViewById(R.id.userName);
             time = itemView.findViewById(R.id.userTime);

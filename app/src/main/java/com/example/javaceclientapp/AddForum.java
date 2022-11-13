@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -64,7 +65,7 @@ public class AddForum extends AppCompatActivity {
     Button uploadBtn;
     DatabaseReference databaseReference;
     Uri imageUri = null;
-
+    String myuid, myname, image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,9 +82,10 @@ public class AddForum extends AppCompatActivity {
 
         forumTitle = findViewById(R.id.forumTitle);
         forumDescription = findViewById(R.id.forumDescription);
-        forumUploader = findViewById(R.id.forumCreator);
+
         imageView = findViewById(R.id.image);
 
+        myuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         uploadBtn = findViewById(R.id.upload);
 
@@ -111,7 +113,6 @@ public class AddForum extends AppCompatActivity {
             public void onClick(View view) {
                 String title = "" + forumTitle.getText().toString().trim();
                 String description = "" + forumDescription.getText().toString().trim();
-                String name = "" + forumUploader.getText().toString().trim();
                 if (TextUtils.isEmpty(title)) {
                     forumTitle.setError("Please enter forum title");
                     return;
@@ -125,10 +126,30 @@ public class AddForum extends AppCompatActivity {
                     return;
                 }
                 else {
-                    uploadForum(title, description, name);
+                    uploadForum(title, description);
+                    loadUserInfo();
                 }
             }
 
+        });
+    }
+
+    private void loadUserInfo() {
+
+        Query myref = FirebaseDatabase.getInstance().getReference("Users");
+        myref.orderByChild("uid").equalTo(myuid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    myname = dataSnapshot1.child("name").getValue().toString();
+                    image = dataSnapshot1.child("image").getValue().toString();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
         });
     }
 
@@ -223,10 +244,10 @@ public class AddForum extends AppCompatActivity {
     }
 
 
-    private void uploadForum(String title, String description, String name) {
+    private void uploadForum(String title, String description) {
         // show the progress dialog box
         progressDialog.show();
-        final String timestamp = String.valueOf(System.currentTimeMillis());
+        String timestamp = String.valueOf(System.currentTimeMillis());
         String filePathName = "Posts/" + "post" + timestamp;
         Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -247,9 +268,10 @@ public class AddForum extends AppCompatActivity {
                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                     String userId = firebaseUser.getUid();
                     String email = firebaseUser.getEmail();
-
                     HashMap<Object, String> hashMap = new HashMap<>();
-                    hashMap.put("name", name);
+
+                    hashMap.put("name", myname);
+                    hashMap.put("image", image);
                     hashMap.put("uid", userId);
                     hashMap.put("email", email);
                     hashMap.put("title", title);

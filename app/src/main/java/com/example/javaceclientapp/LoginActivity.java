@@ -107,6 +107,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        if (firebaseAuth.getCurrentUser() != null) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     private void checkRole(String uid) {
@@ -128,5 +134,7 @@ public class LoginActivity extends AppCompatActivity {
         onBackPressed();
         return super.onSupportNavigateUp();
     }
+
+
 
 }
