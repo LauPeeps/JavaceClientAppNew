@@ -16,12 +16,19 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
@@ -32,7 +39,10 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseAuth firebaseAuth;
     ProgressDialog progressDialog;
+    FirebaseFirestore firestore;
 
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference firebaseDatabaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,15 +55,16 @@ public class LoginActivity extends AppCompatActivity {
 
         goRegister = findViewById(R.id.goToRegister);
 
+
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Logging in...");
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if (firebaseAuth.getCurrentUser() != null) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabaseReference = firebaseDatabase.getReference();
+        firestore = FirebaseFirestore.getInstance();
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +81,19 @@ public class LoginActivity extends AppCompatActivity {
                     password.setError("Please enter your password");
                     password.setFocusable(true);
                 }else {
-                    loginUser(uEmail, uPass);
+                    firebaseAuth.signInWithEmailAndPassword(uEmail, uPass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                            checkRole(authResult.getUser().getUid());
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
@@ -86,52 +109,20 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void loginUser(String email, String password) {
-        progressDialog.show();
+    private void checkRole(String uid) {
+        DocumentReference documentReference = firestore.collection("Users").document(uid);
 
-
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    progressDialog.dismiss();
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                    if (task.getResult().getAdditionalUserInfo().isNewUser()) {
-                        String getEmail = user.getEmail();
-                        String getUid = user.getUid();
-                        HashMap<Object, String> hashMap = new HashMap<>();
-                        hashMap.put("email", getEmail);
-                        hashMap.put("uid", getUid);
-                        hashMap.put("name", "");
-                        hashMap.put("onlineStatus", "online");
-                        hashMap.put("typingTo", "noOne");
-                        hashMap.put("phone", "");
-                        hashMap.put("image", "");
-                        hashMap.put("cover", "");
-
-                        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                        DatabaseReference databaseReference = firebaseDatabase.getReference("Users");
-
-                        databaseReference.child(getUid).setValue(hashMap);
-                    }
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    progressDialog.dismiss();
-                    Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_LONG).show();
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.getString("user") != null) {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressDialog.dismiss();
-                Toast.makeText(LoginActivity.this, "No account exist", Toast.LENGTH_LONG).show();
             }
         });
     }
+
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

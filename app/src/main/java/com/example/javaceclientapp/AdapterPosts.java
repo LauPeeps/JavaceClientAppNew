@@ -92,14 +92,6 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.javaceclienta
         } catch (Exception e) {
 
         }
-        holder.likes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(holder.itemView.getContext(), ForumLikedBy.class);
-                intent.putExtra("pid", pid);
-                holder.itemView.getContext().startActivity(intent);
-            }
-        });
         holder.likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -17,14 +17,18 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -33,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button registerBtn;
     FirebaseAuth firebaseAuth;
     ProgressDialog progressDialog;
-
+    FirebaseFirestore firestore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn = findViewById(R.id.register);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Registering...");
@@ -68,54 +73,53 @@ public class RegisterActivity extends AppCompatActivity {
                     password.setError("Password must be at least 8 characters ");
                     password.setFocusable(true);
                 } else {
-                    registerUser(getEmail,getPass,getUsername);
+                    firebaseAuth.createUserWithEmailAndPassword(getEmail,getPass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                            Toast.makeText(RegisterActivity.this, "Successfully registered the account", Toast.LENGTH_SHORT).show();
+                            DocumentReference documentReference = firestore.collection("Users").document(firebaseUser.getUid());
+                            String uids = firebaseUser.getUid();
+                            Map<String, Object> userInfo = new HashMap<>();
+                            userInfo.put("name", getUsername);
+                            userInfo.put("email", getEmail);
+                            userInfo.put("user", "yes");
+                            userInfo.put("uid", uids);
+
+                            documentReference.set(userInfo);
+
+                            FirebaseUser firebaseUsers = firebaseAuth.getCurrentUser();
+                            assert firebaseUsers != null;
+                            String uid = firebaseUsers.getUid();
+                            HashMap<Object, String> hashMap = new HashMap<>();
+                            hashMap.put("email", getUsername);
+                            hashMap.put("name", getEmail);
+                            hashMap.put("uid", uid);
+                            hashMap.put("user", "yes");
+                            hashMap.put("image", "");
+
+                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://javacemahman-10e8a-default-rtdb.firebaseio.com/");
+                            DatabaseReference databaseReference = firebaseDatabase.getReference("Users");
+                            databaseReference.child(uid).setValue(hashMap);
+
+
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(RegisterActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
     }
 
 
-    private void registerUser(String uEmail, final String uPass, final String uName) {
-        progressDialog.show();
-
-        firebaseAuth.createUserWithEmailAndPassword(uEmail,uPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    progressDialog.dismiss();
-                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                    assert firebaseUser != null;
-                    String email = firebaseUser.getEmail();
-                    String uid = firebaseUser.getUid();
-                    HashMap<Object, String> hashMap = new HashMap<>();
-                    hashMap.put("email", email);
-                    hashMap.put("uid", uid);
-                    hashMap.put("name", uName);
-                    hashMap.put("onlineStatus", "online");
-                    hashMap.put("typingTo", "noOne");
-                    hashMap.put("image", "");
-
-                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://javacemahman-10e8a-default-rtdb.firebaseio.com/");
-                    DatabaseReference databaseReference = firebaseDatabase.getReference("Users");
-                    databaseReference.child(uid).setValue(hashMap);
-
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                    Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
-                    startActivity(intent);
-                    finish();
-                } else {
-                    progressDialog.dismiss();
-                    Toast.makeText(RegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressDialog.dismiss();
-                Toast.makeText(RegisterActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     public boolean onSupportNavigateUp() {
         onBackPressed();
