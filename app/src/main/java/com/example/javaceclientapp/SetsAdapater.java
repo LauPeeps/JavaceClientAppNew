@@ -45,7 +45,7 @@ public class SetsAdapater extends BaseAdapter {
         views.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(viewGroup.getContext(), Questions.class);
+                Intent intent = new Intent(viewGroup.getContext(), TopicActivity.class);
                 intent.putExtra("SETNUM", i);
                 viewGroup.getContext().startActivity(intent);
             }

@@ -104,7 +104,7 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.javaceclienta
             public void onClick(View v) {
                 final int plike = Integer.parseInt(modelPosts.get(position).getLikes());
                 mprocesslike = true;
-                final String postid = modelPosts.get(position).getTimePosted();
+                String postid = modelPosts.get(position).getTimePosted();
                 likeRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

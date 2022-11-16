@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sets"
+        android:text="Submodule"
         android:textColor="#AA1111"
         android:textSize="42dp"
         android:textStyle="bold"

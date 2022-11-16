@@ -9,6 +9,7 @@ import android.widget.GridView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ Category extends AppCompatActivity {
 
 
         CategoryGridAdapter categoryGridAdapter = new CategoryGridAdapter(list);
+
         gridView.setAdapter(categoryGridAdapter);
 
 

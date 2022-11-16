@@ -58,9 +58,8 @@ public class CategoryGridAdapter extends BaseAdapter {
 
         ((TextView) views.findViewById(R.id.categoryName)).setText(list.get(i).getCategory_name());
 
-        Random random = new Random();
-        int color = Color.argb(255,random.nextInt(255),random.nextInt(255),random.nextInt(255));
-        views.setBackgroundColor(color);
+
+        views.setBackgroundColor(Color.parseColor("#fcf0f6"));
 
         return views;
     }
