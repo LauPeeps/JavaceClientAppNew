@@ -84,14 +84,13 @@ public class LoginActivity extends AppCompatActivity {
                     firebaseAuth.signInWithEmailAndPassword(uEmail, uPass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
-                            Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
                             checkRole(authResult.getUser().getUid());
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -116,13 +115,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkRole(String uid) {
+        progressDialog.show();
         DocumentReference documentReference = firestore.collection("Users").document(uid);
 
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.getString("user") != null) {
+                    Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                } else {
+                        Toast.makeText(LoginActivity.this, "User does not exist", Toast.LENGTH_SHORT).show();
+                        firebaseAuth.signOut();
+                        progressDialog.dismiss();
                 }
             }
         });

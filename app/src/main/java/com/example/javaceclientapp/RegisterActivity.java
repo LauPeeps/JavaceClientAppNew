@@ -85,6 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
                             userInfo.put("email", getEmail);
                             userInfo.put("user", "yes");
                             userInfo.put("uid", uids);
+                            userInfo.put("score", 0);
 
                             documentReference.set(userInfo);
 
