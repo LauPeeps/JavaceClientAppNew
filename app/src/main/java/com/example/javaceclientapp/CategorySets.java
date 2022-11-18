@@ -27,6 +27,7 @@ public class CategorySets extends AppCompatActivity {
     GridView setsGridView;
     FirebaseFirestore firestore;
     Dialog progressDialog;
+    static int set_index = 0;
     public static List<String> idOfSets = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {

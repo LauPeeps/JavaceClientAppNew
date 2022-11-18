@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import static com.example.javaceclientapp.CategorySets.set_index;
 
 public class SetsAdapater extends BaseAdapter {
 
@@ -47,6 +48,7 @@ public class SetsAdapater extends BaseAdapter {
             public void onClick(View view) {
                 Intent intent = new Intent(viewGroup.getContext(), TopicActivity.class);
                 intent.putExtra("SETNUM", i);
+                set_index = i;
                 viewGroup.getContext().startActivity(intent);
             }
         });

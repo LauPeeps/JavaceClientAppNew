@@ -22,13 +22,16 @@ public class TopicActivity extends AppCompatActivity {
     TextView topicTitle, topicContent;
     Button questionBtn;
     int setNum;
+    int setNum1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic);
 
 
-        setNum = getIntent().getIntExtra("SETNUM",1);
+        setNum = getIntent().getIntExtra("SETNUM",0);
+
+        setNum1 = setNum;
 
         topicTitle = findViewById(R.id.topicTitle);
         topicContent = findViewById(R.id.topicContent);
@@ -43,6 +46,7 @@ public class TopicActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(TopicActivity.this, Questions.class);
+                intent.putExtra("SETNUM", setNum1);
                 startActivity(intent);
                 finish();
 
