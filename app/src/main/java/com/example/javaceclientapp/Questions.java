@@ -4,6 +4,7 @@ import static com.example.javaceclientapp.CategorySets.idOfSets;
 import static com.example.javaceclientapp.CategorySets.set_index;
 import static com.example.javaceclientapp.SplashActivity.category_index;
 import static com.example.javaceclientapp.SplashActivity.list;
+import static com.example.javaceclientapp.TopicActivity.setNum1;
 
 import android.animation.Animator;
 import android.app.Dialog;
@@ -90,7 +91,7 @@ public class Questions extends AppCompatActivity implements View.OnClickListener
 
 
         firestore.collection("Quiz").document(list.get(category_index).getCategory_id())
-                .collection(idOfSets.get(set_index)).get()
+                .collection(idOfSets.get(setNum1)).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

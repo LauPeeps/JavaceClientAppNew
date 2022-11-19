@@ -10,17 +10,9 @@
             android:icon="@drawable/ic_person"
             android:title="Profile"/>
 
-        <item android:id="@+id/progress"
-            android:icon="@drawable/ic_progress"
-            android:title="Progress"/>
-
         <item android:id="@+id/quiz"
             android:icon="@drawable/ic_quiz"
             android:title="Quiz"/>
-
-        <item android:id="@+id/forum"
-            android:icon="@drawable/ic_forum"
-            android:title="Forum"/>
 
         <item android:id="@+id/resources"
             android:icon="@drawable/ic_resources"
@@ -33,6 +25,14 @@
         <item android:id="@+id/feedback"
             android:icon="@drawable/ic_quiz"
             android:title="Feedback"/>
+
+        <item android:id="@+id/forum"
+            android:icon="@drawable/ic_forum"
+            android:title="Forum"/>
+
+        <item android:id="@+id/addForum"
+            android:icon="@drawable/ic_addforum"
+            android:title="Add Forum"/>
 
         <item android:id="@+id/settings"
             android:icon="@drawable/ic_settings"

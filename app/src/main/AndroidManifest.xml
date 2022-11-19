@@ -60,13 +60,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Progress"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".ResourcesActivity"
             android:exported="false">
             <meta-data

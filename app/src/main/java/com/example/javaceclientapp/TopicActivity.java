@@ -22,7 +22,7 @@ public class TopicActivity extends AppCompatActivity {
     TextView topicTitle, topicContent;
     Button questionBtn;
     int setNum;
-    int setNum1;
+    static int setNum1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

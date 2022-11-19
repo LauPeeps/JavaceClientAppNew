@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -13,15 +14,23 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
+    public static List<CategoryModel> list = new ArrayList<>();
     FirebaseAuth firebaseAuth;
     DrawerLayout drawerLayout;
+    FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+        firestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -45,7 +55,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
+        fetchData();
     }
+
+    private void fetchData() {
+
+        list.clear();
+
+        firestore.collection("Quiz").document("Module").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot.exists()) {
+                        long count = (long) documentSnapshot.get("Exist");
+
+                        for (int i = 1; i<= count; i++) {
+                            String categoryName = documentSnapshot.getString("Module"+String.valueOf(i) + "_name");
+                            String categoryId = documentSnapshot.getString("Module"+String.valueOf(i) + "_Id");
+                            list.add(new CategoryModel(categoryId, categoryName));
+                        }
+
+                    }
+                }
+            }
+        });
+    }
+
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -81,10 +117,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.profile:
                 redirectActivity(MainActivity.this, Profile.class);
                 break;
-            case R.id.progress:
-                redirectActivity(MainActivity.this, Progress.class);
+            case R.id.addForum:
+                redirectActivity(MainActivity.this, AddForum.class);
                 break;
-
             case R.id.logout:
                 firebaseAuth.signOut();
                 redirectActivity(MainActivity.this, LoginActivity.class);
