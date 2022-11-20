@@ -81,16 +81,19 @@ public class LoginActivity extends AppCompatActivity {
                     password.setError("Please enter your password");
                     password.setFocusable(true);
                 }else {
+                    progressDialog.show();
                     firebaseAuth.signInWithEmailAndPassword(uEmail, uPass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
+                            progressDialog.dismiss();
                             checkRole(authResult.getUser().getUid());
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                            Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -115,7 +118,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkRole(String uid) {
-        progressDialog.show();
         DocumentReference documentReference = firestore.collection("Users").document(uid);
 
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -123,8 +125,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.getString("user") != null) {
                     Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
                 } else {
                         Toast.makeText(LoginActivity.this, "User does not exist", Toast.LENGTH_SHORT).show();
                         firebaseAuth.signOut();
