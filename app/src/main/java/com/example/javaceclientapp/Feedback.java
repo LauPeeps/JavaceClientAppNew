@@ -28,7 +28,7 @@ public class Feedback extends AppCompatActivity {
     FirebaseFirestore firestore;
 
     Button sendFeedback;
-    EditText feedbackMessage;
+    EditText feedbackMessage, feedbackTitle;
     ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class Feedback extends AppCompatActivity {
         progressDialog.setMessage("Sending...");
         progressDialog.setCanceledOnTouchOutside(false);
 
+        feedbackTitle = findViewById(R.id.feedbackTitle);
         feedbackMessage = findViewById(R.id.feedbackMessage);
         sendFeedback = findViewById(R.id.sendFeedbackBtn);
 
@@ -56,16 +57,20 @@ public class Feedback extends AppCompatActivity {
                 if (feedbackMessage.getText().toString().isEmpty()) {
                     feedbackMessage.setError("Please enter your message");
                     feedbackMessage.setFocusable(true);
-                } else {
+                } if (feedbackTitle.getText().toString().isEmpty()) {
+                    feedbackTitle.setError("Please enter your title");
+                    feedbackTitle.setFocusable(true);
+                }else {
                     progressDialog.show();
 
                     UUID uuid = UUID.randomUUID();
                     String uuidAsString = uuid.toString();
 
-                    DocumentReference documentReference = firestore.collection("Feedbacks").document(uuidAsString);
-
+                    DocumentReference documentReference = firestore.collection("Feedbacks").document();
+                    String id = documentReference.getId();
                     Map<String, Object> feedback_data = new HashMap<>();
-                    feedback_data.put("feedback_id", uuidAsString);
+                    feedback_data.put("feedback_id", id);
+                    feedback_data.put("feedback_title", feedbackTitle.getText().toString());
                     feedback_data.put("feedback_message", feedbackMessage.getText().toString());
 
                     documentReference.set(feedback_data);

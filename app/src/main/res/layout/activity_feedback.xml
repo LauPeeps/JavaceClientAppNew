@@ -32,11 +32,20 @@
         >
 
         <EditText
+            android:id="@+id/feedbackTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#98CDC2"
+            android:hint="Enter your title"
+            android:padding="10dp"
+            android:gravity="center_horizontal"/>
+
+        <EditText
             android:id="@+id/feedbackMessage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#C6EDE5"
-            android:hint="Enter your message"
+            android:hint="Enter your feedback"
             android:padding="10dp"
             android:gravity="start"/>
     </LinearLayout>
