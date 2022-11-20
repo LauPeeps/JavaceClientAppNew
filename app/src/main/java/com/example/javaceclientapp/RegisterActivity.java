@@ -73,6 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
                     password.setError("Password must be at least 8 characters ");
                     password.setFocusable(true);
                 } else {
+                    progressDialog.show();
                     firebaseAuth.createUserWithEmailAndPassword(getEmail,getPass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
@@ -103,6 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
                             DatabaseReference databaseReference = firebaseDatabase.getReference("Users");
                             databaseReference.child(uid).setValue(hashMap);
 
+                            progressDialog.dismiss();
 
                             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                             startActivity(intent);
