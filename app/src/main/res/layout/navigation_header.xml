@@ -11,17 +11,9 @@
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
+        android:layout_gravity="center_vertical"
         android:src="@drawable/logo"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Client"
-        android:textStyle="bold"
-        android:textSize="21dp"
-        android:textColor="#5C8326"
-        android:paddingLeft="22dp"
-        android:paddingTop="4dp"/>
 
 </LinearLayout>

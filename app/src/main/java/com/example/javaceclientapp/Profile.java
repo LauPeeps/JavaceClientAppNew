@@ -43,6 +43,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -71,6 +72,7 @@ public class Profile extends AppCompatActivity {
     private static final int IMAGE_PICKCAMERA_REQUEST = 400;
     Uri imageuri;
     TextView name, email;
+    FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +100,8 @@ public class Profile extends AppCompatActivity {
 
         name = findViewById(R.id.username);
         email = findViewById(R.id.email);
+
+        firestore = FirebaseFirestore.getInstance();
 
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -458,16 +462,19 @@ public class Profile extends AppCompatActivity {
                 if (!TextUtils.isEmpty(value)) {
                     progressDialog.show();
 
-                    // Here we are updating the new name
                     HashMap<String, Object> result = new HashMap<>();
                     result.put(key, value);
                     databaseReference.child(firebaseUser.getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            progressDialog.dismiss();
 
-                            // after updated we will show updated
-                            Toast.makeText(Profile.this, "Name updated", Toast.LENGTH_LONG).show();
+                            firestore.collection("Users").document(firebaseUser.getUid()).update("name", value).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(Profile.this, "Name updated", Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override

@@ -1,5 +1,9 @@
 package com.example.javaceclientapp;
 
+
+import static com.example.javaceclientapp.SplashActivity.category_index;
+import static com.example.javaceclientapp.SplashActivity.list;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,19 +19,19 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    public static List<CategoryModel> list = new ArrayList<>();
     FirebaseAuth firebaseAuth;
     DrawerLayout drawerLayout;
     FirebaseFirestore firestore;
@@ -44,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Javace");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
@@ -55,29 +61,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        fetchData();
+
     }
 
-    private void fetchData() {
 
-        list.clear();
-
-        firestore.collection("Quiz").document("Module").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        String uid = firebaseUser.getUid();
+        firestore.collection("Users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    if (documentSnapshot.exists()) {
-                        long count = (long) documentSnapshot.get("Exist");
-
-                        for (int i = 1; i<= count; i++) {
-                            String categoryName = documentSnapshot.getString("Module"+String.valueOf(i) + "_name");
-                            String categoryId = documentSnapshot.getString("Module"+String.valueOf(i) + "_Id");
-                            list.add(new CategoryModel(categoryId, categoryName));
-                        }
-
-                    }
+                if (task.getResult().exists()) {
+                    //
+                } else {
+                    firebaseAuth.signOut();
+                    redirectActivity(MainActivity.this, LoginActivity.class);
                 }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

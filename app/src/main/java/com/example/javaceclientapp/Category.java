@@ -2,20 +2,24 @@ package com.example.javaceclientapp;
 
 import static com.example.javaceclientapp.SplashActivity.list;
 
+
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.GridView;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
 public class
 Category extends AppCompatActivity {
     GridView gridView;
+    FirebaseFirestore firestore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +33,7 @@ Category extends AppCompatActivity {
 
         gridView = findViewById(R.id.categoryGridView);
 
+        firestore = FirebaseFirestore.getInstance();
 
         CategoryGridAdapter categoryGridAdapter = new CategoryGridAdapter(list);
 
@@ -36,6 +41,7 @@ Category extends AppCompatActivity {
 
 
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

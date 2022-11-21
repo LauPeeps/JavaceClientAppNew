@@ -1,5 +1,7 @@
 package com.example.javaceclientapp;
 
+
+
 import static com.example.javaceclientapp.SplashActivity.category_index;
 import static com.example.javaceclientapp.SplashActivity.list;
 

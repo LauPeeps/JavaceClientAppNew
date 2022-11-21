@@ -9,7 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Random;
 
 public class CategoryGridAdapter extends BaseAdapter {
 
