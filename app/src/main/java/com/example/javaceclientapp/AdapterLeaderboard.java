@@ -1,9 +1,11 @@
 package com.example.javaceclientapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +39,21 @@ public class AdapterLeaderboard extends RecyclerView.Adapter<AdapterLeaderboard.
 
         holder.nameText.setText(modelLeaderboard.getName());
         holder.scoreText.setText(modelLeaderboard.getScore());
+
+        if (Integer.parseInt(String.valueOf(holder.scoreText.getText().toString())) <= 10) {
+            int bronze = Color.parseColor("#CD7F32");
+            holder.trophy.setColorFilter(bronze);
+        }
+        if (Integer.parseInt(String.valueOf(holder.scoreText.getText().toString())) > 10 && Integer.parseInt(String.valueOf(holder.scoreText.getText().toString())) <= 50) {
+            int copper = Color.parseColor("#B87333");
+            holder.trophy.setColorFilter(copper);
+        } if (Integer.parseInt(String.valueOf(holder.scoreText.getText().toString())) > 50 && Integer.parseInt(String.valueOf(holder.scoreText.getText().toString())) <= 99) {
+            int silver = Color.parseColor("#C0C0C0");
+            holder.trophy.setColorFilter(silver);
+        } if (Integer.parseInt(String.valueOf(holder.scoreText.getText().toString())) >= 100) {
+            int gold = Color.parseColor("#E5B80B");
+            holder.trophy.setColorFilter(gold);
+        }
     }
 
     @Override
@@ -46,10 +63,12 @@ public class AdapterLeaderboard extends RecyclerView.Adapter<AdapterLeaderboard.
 
     public class Viewholder extends RecyclerView.ViewHolder {
         TextView nameText, scoreText;
+        ImageView trophy;
         public Viewholder(@NonNull View itemView) {
             super(itemView);
             nameText = itemView.findViewById(R.id.name);
             scoreText = itemView.findViewById(R.id.score);
+            trophy = itemView.findViewById(R.id.trophy);
 
 
         }

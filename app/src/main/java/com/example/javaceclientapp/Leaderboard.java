@@ -56,12 +56,6 @@ public class Leaderboard extends AppCompatActivity {
 
         recyclerView.setAdapter(adapterLeaderboard);
 
-        fetchLeaderboard();
-
-
-    }
-
-    private void fetchLeaderboard() {
 
         firestore.collection("Users").orderBy("score", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -83,6 +77,7 @@ public class Leaderboard extends AppCompatActivity {
                         }
                     }
                 });
+
     }
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
