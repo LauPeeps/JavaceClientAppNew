@@ -41,15 +41,11 @@ import java.util.Locale;
 
 public class ForumDetails extends AppCompatActivity {
     TextView  userName, userTime, forumTitle, forumDescription, forumLikes, forumComm;
-    String uName, uDp, imageForum, likes;
     ImageView forumImage, sendComment, imageInComment;
     EditText typeComment;
     ImageButton moreBtn;
-    TextView comments;
     RecyclerView recyclerView;
-    ActionBar actionBar;
     String postId;
-    Boolean makeLike = false;
     String myemail, myuid, myname, mydp;
     List<ModelComment> commentShow;
     AdapterComment adapterComment;
@@ -233,12 +229,10 @@ public class ForumDetails extends AppCompatActivity {
 
                     String commentExist = dataSnapshot1.child("comments").getValue().toString();
                     String description = dataSnapshot1.child("description").getValue().toString();
-                    String email = dataSnapshot1.child("email").getValue().toString();
                     String likes = dataSnapshot1.child("likes").getValue().toString();
                     String name = dataSnapshot1.child("name").getValue().toString();
                     String timePosted = dataSnapshot1.child("timePosted").getValue().toString();
                     String title = dataSnapshot1.child("title").getValue().toString();
-                    String uid = dataSnapshot1.child("uid").getValue().toString();
                     String userImage = dataSnapshot1.child("userImage").getValue().toString();
 
                     Calendar calendar = Calendar.getInstance(Locale.ENGLISH);

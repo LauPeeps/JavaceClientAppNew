@@ -31,13 +31,10 @@ import java.util.Objects;
 public class Forum extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
-    String myuid;
     RecyclerView recyclerView;
     List<ModelPost> posts;
     AdapterPosts adapterPosts;
-    String myname, mydp;
     public Forum() {
-        // Required empty public constructor
     }
 
     @Override

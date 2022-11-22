@@ -11,6 +11,7 @@ import java.util.Objects;
 
 public class ResourcesActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
