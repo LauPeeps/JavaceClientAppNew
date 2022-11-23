@@ -1,10 +1,14 @@
 package com.example.javaceclientapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 public class ExerciseActivity extends AppCompatActivity {
 
@@ -27,6 +33,10 @@ public class ExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Exercise");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         title = findViewById(R.id.exerciseTitle);
         desc = findViewById(R.id.exerciseDirection);
@@ -58,14 +68,31 @@ public class ExerciseActivity extends AppCompatActivity {
         progressDialog.getWindow().setBackgroundDrawableResource(R.drawable.progressbar_background);
         progressDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-
         submitCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.show();
                 if (exerciseContent.replaceAll(" ", "").equals(content.getText().toString().replaceAll(" ", ""))) {
-                    Toast.makeText(ExerciseActivity.this, "Correct ka po", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    Intent intent = new Intent(ExerciseActivity.this, ResultActivity.class);
+                    intent.putExtra("scoreSuccess", exerciseScore);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    progressDialog.dismiss();
+                    Intent intent = new Intent(ExerciseActivity.this, ResultActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
             }
         });
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            ExerciseActivity.this.finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
