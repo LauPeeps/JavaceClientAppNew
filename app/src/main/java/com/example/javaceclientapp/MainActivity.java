@@ -1,13 +1,11 @@
 package com.example.javaceclientapp;
 
-
-import static com.example.javaceclientapp.SplashActivity.category_index;
-import static com.example.javaceclientapp.SplashActivity.list;
-
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 
@@ -17,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,7 +26,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -35,6 +39,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FirebaseAuth firebaseAuth;
     DrawerLayout drawerLayout;
     FirebaseFirestore firestore;
+    Dialog progressDialog;
+    List<ExercisesModel> exercisesModels = new ArrayList<>();
+    ExercisesAdapter exercisesAdapter;
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +65,60 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        progressDialog = new Dialog(MainActivity.this);
+        progressDialog.setContentView(R.layout.loading_progressbar);
+        progressDialog.setCancelable(false);
+        progressDialog.getWindow().setBackgroundDrawableResource(R.drawable.progressbar_background);
+        progressDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
 
+        recyclerView = findViewById(R.id.exerciseRecycler);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(layoutManager);
+
+        fetchExercises();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchExercises();
+    }
+
+    private void fetchExercises() {
+        progressDialog.show();
+        firestore.collection("Exercises").orderBy("exercise_score", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                exercisesModels.clear();
+                progressDialog.dismiss();
+
+                for (DocumentSnapshot documentSnapshot: task.getResult()) {
+                    ExercisesModel exercisesModel = new ExercisesModel(documentSnapshot.getString("eId"),
+                            documentSnapshot.getString("exercise_title"),
+                            documentSnapshot.getString("exercise_instruction"),
+                            documentSnapshot.getString("exercise_content"),
+                            documentSnapshot.getString("exercise_score"));
+                    exercisesModels.add(exercisesModel);
+                }
+                exercisesAdapter = new ExercisesAdapter(MainActivity.this, exercisesModels);
+                recyclerView.setAdapter(exercisesAdapter);
+                exercisesAdapter.notifyItemInserted(exercisesModels.size());
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
 
@@ -117,9 +174,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.leaderboard:
                 redirectActivity(MainActivity.this, Leaderboard.class);
-                break;
-            case R.id.settings:
-                redirectActivity(MainActivity.this, SettingsActivity.class);
                 break;
             case R.id.profile:
                 redirectActivity(MainActivity.this, Profile.class);

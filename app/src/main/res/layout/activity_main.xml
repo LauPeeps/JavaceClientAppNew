@@ -18,6 +18,12 @@
           android:elevation="4dp"
           android:id="@+id/toolbar"
           />
+
+      <androidx.recyclerview.widget.RecyclerView
+         android:id="@+id/exerciseRecycler"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+         />
    </LinearLayout>
 
    <com.google.android.material.navigation.NavigationView

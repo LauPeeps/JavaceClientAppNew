@@ -11,7 +11,8 @@
         android:id="@+id/toolbarSets"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#B4BFAE"/>
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:background="#262433"/>
 
     <TextView
         android:layout_width="match_parent"

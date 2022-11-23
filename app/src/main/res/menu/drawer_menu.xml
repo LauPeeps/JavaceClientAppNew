@@ -34,10 +34,6 @@
             android:icon="@drawable/ic_addforum"
             android:title="Add Forum"/>
 
-        <item android:id="@+id/settings"
-            android:icon="@drawable/ic_settings"
-            android:title="Settings"/>
-
         <item android:id="@+id/logout"
             android:icon="@drawable/ic_logout"
             android:title="Logout"/>
