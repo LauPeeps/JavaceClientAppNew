@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF5EE"
     tools:context=".AddForum">
 
     <androidx.appcompat.widget.Toolbar
@@ -28,7 +27,9 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center_horizontal|center_vertical">
 
 
             <EditText
@@ -46,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="15dp"
-                android:src="@drawable/ic_settings"/>
+                android:src="@drawable/ic_image"/>
 
             <EditText
                 android:id="@+id/forumDescription"
