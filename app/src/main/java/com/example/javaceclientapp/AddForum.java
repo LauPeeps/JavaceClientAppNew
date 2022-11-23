@@ -245,7 +245,7 @@ public class AddForum extends AppCompatActivity {
 
 
     private void uploadForum(String title, String description) {
-        // show the progress dialog box
+
         progressDialog.show();
         String timestamp = String.valueOf(System.currentTimeMillis());
         String filePathName = "Posts/" + "post" + timestamp;
@@ -255,12 +255,12 @@ public class AddForum extends AppCompatActivity {
         byte[] data = byteArrayOutputStream.toByteArray();
 
 
-        // initialising the storage reference for updating the data
+
         StorageReference storageReference1 = FirebaseStorage.getInstance().getReference().child(filePathName);
         storageReference1.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // getting the url of image uploaded
+
                 Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                 while (!uriTask.isSuccessful()) ;
                 String downloadUri = uriTask.getResult().toString();
@@ -281,7 +281,7 @@ public class AddForum extends AppCompatActivity {
                     hashMap.put("likes", "0");
                     hashMap.put("comments", "0");
 
-                    // set the data into firebase and then empty the title ,description and image data
+
                     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
                     databaseReference.child(timestamp).setValue(hashMap)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
