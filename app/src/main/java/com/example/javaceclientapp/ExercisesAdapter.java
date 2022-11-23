@@ -52,6 +52,15 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesViewholder> 
                 String content = exercisesModelList.get(position).getExercise_content();
                 String score = exercisesModelList.get(position).getExercise_score();
 
+                Intent intent = new Intent(mainActivity, ExerciseActivity.class);
+                intent.putExtra("eId", eid);
+                intent.putExtra("title", title);
+                intent.putExtra("instruction", instruction);
+                intent.putExtra("content", content);
+                intent.putExtra("score", score);
+
+                mainActivity.startActivity(intent);
+
             }
 
             @Override
