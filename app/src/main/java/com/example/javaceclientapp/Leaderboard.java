@@ -12,7 +12,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -44,7 +48,6 @@ public class Leaderboard extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Fetching leaderboards data...");
         progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
 
         recyclerView = findViewById(R.id.leaderboardRecycle);
         recyclerView.setHasFixedSize(true);
@@ -57,10 +60,26 @@ public class Leaderboard extends AppCompatActivity {
         recyclerView.setAdapter(adapterLeaderboard);
 
 
+
+        fetchLeaderboard();
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchLeaderboard();
+    }
+
+    private void fetchLeaderboard() {
+        progressDialog.show();
         firestore.collection("Users").orderBy("score", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        modelLeaderboardArrayList.clear();
                         if (error != null) {
                             if (progressDialog.isShowing())
                                 progressDialog.dismiss();
@@ -68,7 +87,7 @@ public class Leaderboard extends AppCompatActivity {
                             return;
                         }
                         for (DocumentChange documentChange : value.getDocumentChanges()) {
-                            if (documentChange.getType() == DocumentChange.Type.ADDED) {
+                            if (documentChange.getType() == DocumentChange.Type.ADDED || documentChange.getType() == DocumentChange.Type.MODIFIED) {
                                 modelLeaderboardArrayList.add(documentChange.getDocument().toObject(ModelLeaderboard.class));
                             }
                             adapterLeaderboard.notifyDataSetChanged();
@@ -77,8 +96,8 @@ public class Leaderboard extends AppCompatActivity {
                         }
                     }
                 });
-
     }
+
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
