@@ -1,8 +1,11 @@
 package com.example.javaceclientapp;
 
 import static com.example.javaceclientapp.CategorySets.idOfSets;
+import static com.example.javaceclientapp.CategorySets.set_index;
 import static com.example.javaceclientapp.SplashActivity.category_index;
 import static com.example.javaceclientapp.SplashActivity.list;
+import static com.example.javaceclientapp.SubmoduleAdapter.moduleId;
+import static com.example.javaceclientapp.SubmoduleAdapter.subId;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,17 +25,11 @@ public class TopicActivity extends AppCompatActivity {
     FirebaseFirestore firestore;
     TextView topicTitle, topicContent;
     Button questionBtn;
-    int setNum;
-    static int setNum1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic);
 
-
-        setNum = getIntent().getIntExtra("SETNUM",0);
-
-        setNum1 = setNum;
 
         topicTitle = findViewById(R.id.topicTitle);
         topicContent = findViewById(R.id.topicContent);
@@ -48,7 +45,6 @@ public class TopicActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(TopicActivity.this, Questions.class);
-                intent.putExtra("SETNUM", setNum1);
                 startActivity(intent);
                 finish();
 
@@ -57,15 +53,18 @@ public class TopicActivity extends AppCompatActivity {
 
 
 
-        firestore.collection("Quiz").document(list.get(category_index).getCategory_id())
-                .collection(idOfSets.get(setNum)).document("Topic_List").get()
+
+        firestore.collection("Quizzes").document(moduleId)
+                .collection(subId).document("Topic_List").get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        topicTitle.setText(documentSnapshot.getString("Topic_Title"));
-                        topicContent.setText(documentSnapshot.getString("Topic_Content"));
+                        topicTitle.setText(documentSnapshot.getString("topic_title"));
+                        topicContent.setText(documentSnapshot.getString("topic_content"));
                     }
                 });
+
+        topicContent.setMovementMethod(new ScrollingMovementMethod());
 
     }
 

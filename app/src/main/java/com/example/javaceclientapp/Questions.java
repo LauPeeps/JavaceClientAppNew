@@ -4,7 +4,8 @@ import static com.example.javaceclientapp.CategorySets.idOfSets;
 import static com.example.javaceclientapp.CategorySets.set_index;
 import static com.example.javaceclientapp.SplashActivity.category_index;
 import static com.example.javaceclientapp.SplashActivity.list;
-import static com.example.javaceclientapp.TopicActivity.setNum1;
+import static com.example.javaceclientapp.SubmoduleAdapter.moduleId;
+import static com.example.javaceclientapp.SubmoduleAdapter.subId;
 
 import android.animation.Animator;
 import android.app.Dialog;
@@ -82,7 +83,7 @@ public class Questions extends AppCompatActivity implements View.OnClickListener
 
         score = 0;
 
-        setNum = getIntent().getIntExtra("SETNUM", 0);
+
     }
 
     private void fetchQuestions() {
@@ -90,8 +91,8 @@ public class Questions extends AppCompatActivity implements View.OnClickListener
         questionModels.clear();
 
 
-        firestore.collection("Quiz").document(list.get(category_index).getCategory_id())
-                .collection(idOfSets.get(setNum1)).get()
+        firestore.collection("Quizzes").document(moduleId)
+                .collection(subId).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

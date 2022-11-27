@@ -51,12 +51,12 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
                 String moduleName = moduleModelList.get(position).getModule_name();
                 Long submodules = moduleModelList.get(position).getSubmodules();
 
-                /*Intent intent = new Intent(module, Submodule.class);
+                Intent intent = new Intent(module, Submodule.class);
                 intent.putExtra("moduleid", moduleId);
                 intent.putExtra("modulename", moduleName);
                 intent.putExtra("submodules", submodules);
 
-                module.startActivity(intent);*/
+                module.startActivity(intent);
             }
 
             @Override
