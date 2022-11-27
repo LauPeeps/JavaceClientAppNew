@@ -23,9 +23,7 @@ import java.util.List;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static int SPLASH_SCREEN = 5000;
-    public static List<CategoryModel> list = new ArrayList<>();
-    public static int category_index = 0;
+    private static int SPLASH_SCREEN = 3000;
     FirebaseFirestore firestore;
     Animation animation;
     ImageView image;
@@ -47,43 +45,12 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                fetchData();
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
             }
         },SPLASH_SCREEN);
 
     }
 
-    private void fetchData() {
 
-        list.clear();
-
-        firestore.collection("Quiz").document("Module").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    if (documentSnapshot.exists()) {
-                        long count = (long) documentSnapshot.get("Exist");
-
-                        for (int i = 1; i<= count; i++) {
-                            String categoryName = documentSnapshot.getString("Module"+String.valueOf(i) + "_name");
-                            String categoryId = documentSnapshot.getString("Module"+String.valueOf(i) + "_Id");
-                            list.add(new CategoryModel(categoryId, categoryName));
-                        }
-
-                        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        SplashActivity.this.finish();
-                    }
-                    else {
-                        Toast.makeText(SplashActivity.this, "No data exist", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                }
-                else {
-                    Toast.makeText(SplashActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
 }

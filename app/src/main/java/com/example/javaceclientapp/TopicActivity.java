@@ -1,9 +1,5 @@
 package com.example.javaceclientapp;
 
-import static com.example.javaceclientapp.CategorySets.idOfSets;
-import static com.example.javaceclientapp.CategorySets.set_index;
-import static com.example.javaceclientapp.SplashActivity.category_index;
-import static com.example.javaceclientapp.SplashActivity.list;
 import static com.example.javaceclientapp.SubmoduleAdapter.moduleId;
 import static com.example.javaceclientapp.SubmoduleAdapter.subId;
 
