@@ -56,7 +56,7 @@
              android:id="@+id/uniqueMessage"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:text="Welcome back"
+             android:text="Welcome"
              android:textColor="@color/teal_200"
              android:textSize="18dp"/>
 

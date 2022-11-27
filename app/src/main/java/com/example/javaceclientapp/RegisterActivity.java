@@ -75,7 +75,6 @@ public class RegisterActivity extends AppCompatActivity {
         registerUser = findViewById(R.id.userRegBtn);
 
 
-
         registerUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,69 +94,17 @@ public class RegisterActivity extends AppCompatActivity {
                         userEmail.setError("Invalid email");
                         return;
                     }
-                    addUser(userName.getText().toString(), userFullName.getText().toString(), phone.getText().toString(),
-                            userEmail.getText().toString(), userPassword.getText().toString());
+
+                    Intent intent = new Intent(RegisterActivity.this, VerifyAccountActivity.class);
+                    intent.putExtra("phoneNumber", phone.getText().toString());
+                    intent.putExtra("userName", userName.getText().toString());
+                    intent.putExtra("userFullName", userFullName.getText().toString());
+                    intent.putExtra("userEmail", userEmail.getText().toString());
+                    intent.putExtra("userPassword", userPassword.getText().toString());
+                    startActivity(intent);
                 }
 
             });
-    }
-
-
-    private void addUser(String username, String fullname, String phone, String email, String password) {
-        progressDialog.show();
-        firebaseAuth.createUserWithEmailAndPassword(userEmail.getText().toString(), userPassword.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                String uid = firebaseUser.getUid();
-
-                DocumentReference documentReference = firestore.collection("Users").document(firebaseUser.getUid());
-
-                Map<String, Object> student_data = new HashMap<>();
-                student_data.put("uid", uid);
-                student_data.put("username", username);
-                student_data.put("fullname", fullname);
-                student_data.put("phone", phone);
-                student_data.put("email", email);
-                student_data.put("user", "yes");
-                student_data.put("score", "0");
-
-                documentReference.set(student_data);
-
-                FirebaseUser firebaseUsers = firebaseAuth.getCurrentUser();
-                assert firebaseUsers != null;
-                String uids = firebaseUsers.getUid();
-                HashMap<Object, String> hashMap = new HashMap<>();
-                hashMap.put("uid", uids);
-                hashMap.put("username", username);
-                hashMap.put("fullname", fullname);
-                hashMap.put("phone", phone);
-                hashMap.put("email", email);
-                hashMap.put("user", "yes");
-                hashMap.put("image", "");
-
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://javacemahman-10e8a-default-rtdb.firebaseio.com/");
-                DatabaseReference databaseReference = firebaseDatabase.getReference("Users");
-                databaseReference.child(uid).setValue(hashMap);
-
-                progressDialog.dismiss();
-                Toast.makeText(RegisterActivity.this, "Student added successfully", Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(RegisterActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-            }
-        });
-
     }
 
 }
