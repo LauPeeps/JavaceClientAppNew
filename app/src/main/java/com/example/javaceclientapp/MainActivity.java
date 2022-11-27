@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity{
         goToQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                redirectActivity(MainActivity.this, Category.class);
+                redirectActivity(MainActivity.this, Module.class);
             }
         });
 
