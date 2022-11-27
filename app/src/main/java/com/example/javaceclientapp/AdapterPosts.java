@@ -64,7 +64,7 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.javaceclienta
 
     @Override
     public void onBindViewHolder(@NonNull final MyHolder holder, @SuppressLint("RecyclerView") final int position) {
-        String names = modelPosts.get(position).getName();
+        String names = modelPosts.get(position).getUsername();
         String uid = modelPosts.get(position).getUid();
         String title = modelPosts.get(position).getTitle();
         String description = modelPosts.get(position).getDescription();

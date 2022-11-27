@@ -37,7 +37,7 @@ public class AdapterLeaderboard extends RecyclerView.Adapter<AdapterLeaderboard.
 
         ModelLeaderboard modelLeaderboard = leaderboards.get(position);
 
-        holder.nameText.setText(modelLeaderboard.getName());
+        holder.nameText.setText(modelLeaderboard.getUsername());
         holder.scoreText.setText(modelLeaderboard.getScore());
 
         if (Integer.parseInt(String.valueOf(holder.scoreText.getText().toString())) <= 10) {

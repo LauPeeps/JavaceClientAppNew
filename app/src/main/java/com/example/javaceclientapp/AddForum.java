@@ -141,7 +141,7 @@ public class AddForum extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    myname = dataSnapshot1.child("name").getValue().toString();
+                    myname = dataSnapshot1.child("username").getValue().toString();
                     image = dataSnapshot1.child("image").getValue().toString();
                 }
             }
@@ -270,7 +270,7 @@ public class AddForum extends AppCompatActivity {
                     String email = firebaseUser.getEmail();
                     HashMap<Object, String> hashMap = new HashMap<>();
 
-                    hashMap.put("name", myname);
+                    hashMap.put("username", myname);
                     hashMap.put("image", image);
                     hashMap.put("uid", userId);
                     hashMap.put("email", email);

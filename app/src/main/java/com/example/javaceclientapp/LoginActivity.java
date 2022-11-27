@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         loginBtn = findViewById(R.id.login);
 
-        goRegister = findViewById(R.id.goToRegister);
+        goRegister = findViewById(R.id.registerStudent);
 
 
 

@@ -1,66 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/loginregbackground"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".RegisterActivity">
 
 
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        app:cardElevation="9dp"
-        app:cardCornerRadius="12dp"
-        android:layout_margin="9dp"
-        app:cardBackgroundColor="#000000"
-        app:cardMaxElevation="4dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true"
-        android:backgroundTint="#BCD1E4"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        app:cardElevation="12dp"
+        app:cardCornerRadius="21dp"
+        android:backgroundTint="#FFFFFF"
         >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_gravity="center_vertical"
-            android:padding="12dp">
-            <EditText
-                android:textCursorDrawable="@drawable/text_cursor"
-                android:id="@+id/username"
+            android:layout_gravity="center_horizontal"
+            android:padding="15dp"
+            >
+            <TextView
+                android:id="@+id/registerText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Register User"
+                android:textAlignment="center"
+                android:textSize="30dp"
+                android:textColor="#4B47C1"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"/>
+
+            <EditText
+                android:id="@+id/userUsername"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/button_design"
                 android:hint="Username"
-                android:backgroundTint="@color/black"
-                android:padding="14dp"/>
+                android:inputType="textPersonName"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textCursorDrawable="@drawable/text_cursor" />
             <EditText
-                android:textCursorDrawable="@drawable/text_cursor"
-                android:id="@+id/email"
+                android:id="@+id/userFullName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Email"
+                android:layout_height="50dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/button_design"
+                android:hint="Fullname"
                 android:inputType="textEmailAddress"
-                android:backgroundTint="@color/black"
-                android:padding="14dp"/>
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textCursorDrawable="@drawable/text_cursor" />
             <EditText
+                android:id="@+id/userPhone"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/button_design"
+                android:hint="Phone Number"
+                android:maxLength="11"
+                android:inputType="number"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textCursorDrawable="@drawable/text_cursor" />
+
+            <EditText
+                android:id="@+id/userEmail"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/button_design"
+                android:padding="8dp"
+                android:hint="Email"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/black"
                 android:textCursorDrawable="@drawable/text_cursor"
-                android:id="@+id/password"
+                />
+            <EditText
+                android:id="@+id/userPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Password"
+                android:layout_height="50dp"
                 android:inputType="textPassword"
-                android:backgroundTint="@color/black"
-                android:padding="14dp"/>
+                android:background="@drawable/button_design"
+                android:padding="8dp"
+                android:hint="Password"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/black"
+                android:textCursorDrawable="@drawable/text_cursor"
+                />
+
             <Button
-                android:id="@+id/register"
+                android:id="@+id/userRegBtn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:text="Register"
-                android:layout_marginHorizontal="100dp"
-                android:backgroundTint="#AC8A8A"
+                android:textSize="21dp"
                 />
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
-</RelativeLayout>
+
+
+
+
+</LinearLayout>

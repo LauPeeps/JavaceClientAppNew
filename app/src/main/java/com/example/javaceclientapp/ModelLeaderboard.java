@@ -2,23 +2,23 @@ package com.example.javaceclientapp;
 
 public class ModelLeaderboard {
 
-    private String name;
+    private String username;
     private String score;
 
     public ModelLeaderboard() {}
 
 
-    public ModelLeaderboard(String name, String score) {
-        this.name = name;
+    public ModelLeaderboard(String username, String score) {
+        this.username = username;
         this.score = score;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getScore() {

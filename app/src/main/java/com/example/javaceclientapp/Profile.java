@@ -110,7 +110,7 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
-                    String getName = "" + dataSnapshot1.child("name").getValue();
+                    String getName = "" + dataSnapshot1.child("username").getValue();
                     String getEmail = "" + dataSnapshot1.child("email").getValue();
                     String image = "" + dataSnapshot1.child("image").getValue();
 
@@ -133,7 +133,7 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 progressDialog.setMessage("Change name");
-                showNameDialog("name");
+                showNameDialog("username");
             }
         });
 
@@ -468,7 +468,7 @@ public class Profile extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
 
-                            firestore.collection("Users").document(firebaseUser.getUid()).update("name", value).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            firestore.collection("Users").document(firebaseUser.getUid()).update("username", value).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     progressDialog.dismiss();
@@ -483,7 +483,7 @@ public class Profile extends AppCompatActivity {
                             Toast.makeText(Profile.this, "Unable to update name", Toast.LENGTH_LONG).show();
                         }
                     });
-                    if (key.equals("name")) {
+                    if (key.equals("username")) {
                         DatabaseReference databaser = FirebaseDatabase.getInstance().getReference("Posts");
                         Query query = databaser.orderByChild("uid").equalTo(uid);
                         query.addValueEventListener(new ValueEventListener() {
@@ -491,7 +491,7 @@ public class Profile extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                     String child = databaser.getKey();
-                                    dataSnapshot1.getRef().child("name").setValue(value);
+                                    dataSnapshot1.getRef().child("username").setValue(value);
                                 }
                             }
 
