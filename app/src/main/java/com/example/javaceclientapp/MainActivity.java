@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity{
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firestore;
     Dialog progressDialog;
-    ImageView logout, goToProfile, goToQuiz, goToResources, goToLeaderboard, goToFeedback, goToForum, goToAddForum;
+    ImageView logout, goToProfile, goToQuiz, goToResources, goToLeaderboard, goToFeedback, goToForum, goToAddForum, goToCompiler;
     TextView userName;
     String currentUser;
 
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity{
         goToFeedback = findViewById(R.id.goToFeedback);
         goToForum = findViewById(R.id.goToForum);
         goToAddForum = findViewById(R.id.goToAddForum);
+        goToCompiler = findViewById(R.id.goToCompiler);
 
         userName = findViewById(R.id.userName);
 
@@ -81,6 +82,13 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 firebaseAuth.signOut();
+            }
+        });
+
+        goToCompiler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                redirectActivity(MainActivity.this, CompilerActivity.class);
             }
         });
 
