@@ -74,7 +74,6 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
     @Override
     public void onBindViewHolder(@NonNull ModuleViewholder holder, int position) {
         holder.moduleName.setText(moduleModelList.get(position).getModule_name());
-        holder.modulePreview.setText(moduleModelList.get(position).getModule_preview());
 
     }
 

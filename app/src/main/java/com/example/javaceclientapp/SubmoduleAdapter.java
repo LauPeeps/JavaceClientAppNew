@@ -75,7 +75,6 @@ public class SubmoduleAdapter extends RecyclerView.Adapter<SubmoduleViewholder> 
     @Override
     public void onBindViewHolder(@NonNull SubmoduleViewholder holder, int position) {
         holder.subModuleName.setText(submoduleModelList.get(position).getSubmodule_id());
-        holder.subModulePreview.setText(submoduleModelList.get(position).getSubmodule_preview());
     }
 
     @Override

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class SubmoduleViewholder extends RecyclerView.ViewHolder {
 
-    TextView subModuleName, subModulePreview;
+    TextView subModuleName;
     View view;
 
     public SubmoduleViewholder(@NonNull View itemView) {
@@ -31,7 +31,6 @@ public class SubmoduleViewholder extends RecyclerView.ViewHolder {
             }
         });
         subModuleName = itemView.findViewById(R.id.moduleName);
-        subModulePreview = itemView.findViewById(R.id.modulePreview);
 
     }
     private SubmoduleViewholder.ListenerClicker listenerClicker;

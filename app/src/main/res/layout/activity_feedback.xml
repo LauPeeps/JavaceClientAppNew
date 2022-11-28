@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/backgrounduser"
     tools:context=".Feedback">
 
 
@@ -32,12 +33,11 @@
 
         <EditText
             android:textColor="@color/white"
-            android:textColorHint="@color/white"
             android:textCursorDrawable="@drawable/text_cursor"
             android:id="@+id/feedbackTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#433B3B"
+
             android:hint="Enter your title"
             android:padding="10dp"
             android:gravity="center_horizontal"
@@ -48,7 +48,6 @@
             android:id="@+id/feedbackMessage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#C6EDE5"
             android:hint="Enter your feedback"
             android:padding="10dp"
             android:gravity="start"/>
@@ -65,7 +64,8 @@
         android:layout_marginHorizontal="50dp"
         android:text="Send Feedback"
         android:textSize="18dp"
-        android:backgroundTint="#433B3B"
+        android:textColor="@color/black"
+        android:backgroundTint="#d3b498"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -76,7 +76,6 @@ public class Module extends AppCompatActivity {
                 for (DocumentSnapshot documentSnapshot: task.getResult()) {
                     ModuleModel moduleModel = new ModuleModel(documentSnapshot.getString("module_id"),
                             documentSnapshot.getString("module_name"),
-                            documentSnapshot.getString("module_message"),
                             documentSnapshot.getTimestamp("module_created"),
                             documentSnapshot.getLong("submodules"));
                     moduleModelList.add(moduleModel);
