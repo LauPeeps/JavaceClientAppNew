@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="700dp"
         android:orientation="vertical"
         >
 
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="dasdas"
+            android:text="Topic"
             />
 
         <View
@@ -35,19 +35,21 @@
         <TextView
             android:textSize="16dp"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:id="@+id/topicContent"
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:gravity="start"
             android:scrollbars="vertical"
-            android:padding="4dp"
-            android:text="dasdas"
+            android:padding="8dp"
+            android:text="Content"
+            android:background="@drawable/topic_background"
             />
 
         <Button
             android:id="@+id/qBtn"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="21dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Take Quiz"

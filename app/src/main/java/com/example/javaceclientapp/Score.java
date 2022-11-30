@@ -1,5 +1,8 @@
 package com.example.javaceclientapp;
 
+import static com.example.javaceclientapp.SubmoduleAdapter.moduleId;
+import static com.example.javaceclientapp.SubmoduleAdapter.subId;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -94,7 +97,21 @@ public class Score extends AppCompatActivity {
                                     Map<String, Object> score_data = new HashMap<>();
                                     score_data.put("score", recordScore);
                                     documentReference.update(score_data);
-                                    Toast.makeText(Score.this, "Score recorded", Toast.LENGTH_SHORT).show();
+
+
+                                    DocumentReference documentReference1 = firestore.collection("Quizzes").document(moduleId).collection(subId).document("Quiz_Taker");
+                                    documentReference1.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            String getQuizzer = documentSnapshot.getString("quizzer");
+                                            int addQuizzer = Integer.parseInt(getQuizzer) + 1;
+                                            Map<String, Object> user_data = new HashMap<>();
+                                            user_data.put(firebaseUser.getUid(), firebaseUser.getUid());
+                                            user_data.put("quizzer", String.valueOf(addQuizzer));
+                                            firestore.collection("Quizzes").document(moduleId).collection(subId).document("Quiz_Taker").update(user_data);
+                                            Toast.makeText(Score.this, "Score recorded", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
                             }
                         }
