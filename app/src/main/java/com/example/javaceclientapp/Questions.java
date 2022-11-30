@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -51,12 +52,17 @@ public class Questions extends AppCompatActivity implements View.OnClickListener
 
         qCounter = findViewById(R.id.text1);
         question = findViewById(R.id.text2);
+        question.setMovementMethod(new ScrollingMovementMethod());
         qTimer = findViewById(R.id.timer);
 
         btn1 = findViewById(R.id.btn1);
         btn2 = findViewById(R.id.btn2);
         btn3 = findViewById(R.id.btn3);
         btn4 = findViewById(R.id.btn4);
+        btn1.setTransformationMethod(null);
+        btn2.setTransformationMethod(null);
+        btn3.setTransformationMethod(null);
+        btn4.setTransformationMethod(null);
 
         btn1.setOnClickListener(this);
         btn2.setOnClickListener(this);
