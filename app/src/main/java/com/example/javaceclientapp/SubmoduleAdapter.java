@@ -45,7 +45,7 @@ public class SubmoduleAdapter extends RecyclerView.Adapter<SubmoduleViewholder> 
     @Override
     public SubmoduleViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.module_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.submodule_item, parent, false);
 
         SubmoduleViewholder submoduleViewholder = new SubmoduleViewholder(itemView);
 

@@ -1,9 +1,6 @@
 package com.example.javaceclientapp;
 
 
-import static com.example.javaceclientapp.Module.currentValueProgress;
-import static com.example.javaceclientapp.Module.userNow;
-
 import android.content.Intent;
 
 import android.view.LayoutInflater;
@@ -14,9 +11,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -24,7 +18,6 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
 
     Module module;
     List<ModuleModel> moduleModelList;
-    FirebaseFirestore firestore;
 
     public ModuleAdapter(Module module, List<ModuleModel> moduleModelList) {
         this.module = module;
@@ -72,19 +65,17 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
     @Override
     public void onBindViewHolder(@NonNull ModuleViewholder holder, int position) {
         holder.moduleName.setText(moduleModelList.get(position).getModule_name());
-        holder.progressBar.setProgress(0);
 
+            if (moduleModelList.get(position).getUser_data() == null) {
 
-        if (moduleModelList.get(position).getUser_data() == null) {
-
-        } else {
-            float data1 = moduleModelList.get(position).getUser_data();
-            float data2 = moduleModelList.get(position).getSubmodules();
-            float result = data1 / data2;
-            int finalResult = (int) (result * 100);
-            holder.progressValue.setText(String.valueOf(finalResult) + "%");
-            holder.progressBar.setProgress(finalResult);
-        }
+            } else {
+                float data1 = moduleModelList.get(position).getUser_data();
+                float data2 = moduleModelList.get(position).getSubmodules();
+                float result = data1 / data2;
+                int finalResult = (int) (result * 100);
+                holder.progressValue.setText(String.valueOf(finalResult) + "%");
+                holder.progressBar.setProgress(finalResult);
+            }
 
     }
 

@@ -28,7 +28,7 @@ public class Score extends AppCompatActivity {
 
     List<QuestionModel> questModel;
     TextView score;
-    Button finish;
+    Button finish, retry;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseFirestore firestore;
@@ -39,8 +39,12 @@ public class Score extends AppCompatActivity {
 
         score = findViewById(R.id.scorepoint);
         finish = findViewById(R.id.finishBtn);
+        retry = findViewById(R.id.retryBtn);
 
         String score_message = getIntent().getStringExtra("SCORE");
+        String passing_score = getIntent().getStringExtra("passing");
+
+
         score.setText(score_message);
 
         String separator = "/";
@@ -53,43 +57,65 @@ public class Score extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
         DocumentReference documentReference = firestore.collection("Users").document(firebaseUser.getUid());
 
+        int scoreResult = Integer.parseInt(score.getText().toString().substring(0,separatorPos));
 
-        finish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        float data1 = Float.parseFloat(passing_score);
+        float data2 = scoreResult;
+        float resultInPercent = data2 / data1 * 100;
+        int finalResult = (int) resultInPercent;
 
-                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot documentSnapshot = task.getResult();
-                            if (documentSnapshot.exists()) {
-                                String currentScore = documentSnapshot.getString("score");
-                                int newScore = Integer.parseInt(currentScore) + Integer.parseInt(score.getText().toString().substring(0,separatorPos));
-                                String recordScore = String.valueOf(newScore);
-                                Map<String, Object> score_data = new HashMap<>();
-                                score_data.put("score", recordScore);
-                                documentReference.update(score_data);
-                                Toast.makeText(Score.this, "Score recorded", Toast.LENGTH_SHORT).show();
+
+
+        if (finalResult < 50) {
+            finish.setVisibility(View.GONE);
+            retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(Score.this, MainActivity.class));
+                    finish();
+                }
+            });
+        } else {
+            retry.setVisibility(View.GONE);
+            finish.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+                    documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot documentSnapshot = task.getResult();
+                                if (documentSnapshot.exists()) {
+                                    String currentScore = documentSnapshot.getString("score");
+                                    int newScore = Integer.parseInt(currentScore) + Integer.parseInt(score.getText().toString().substring(0,separatorPos));
+                                    String recordScore = String.valueOf(newScore);
+                                    Map<String, Object> score_data = new HashMap<>();
+                                    score_data.put("score", recordScore);
+                                    documentReference.update(score_data);
+                                    Toast.makeText(Score.this, "Score recorded", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(Score.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(Score.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    Intent intent = new Intent(Score.this, MainActivity.class);
+                    Score.this.startActivity(intent);
+                    Score.this.finish();
+                }
+            });
 
-
-
-
-                Intent intent = new Intent(Score.this, MainActivity.class);
-                Score.this.startActivity(intent);
-                Score.this.finish();
-            }
-        });
+        }
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

@@ -191,23 +191,23 @@ public class Questions extends AppCompatActivity implements View.OnClickListener
     }
     private void checkAnswer(int selectBtn, View view) {
         if (selectBtn == questionModels.get(questionNum).getCorrect()) {
-            ((Button) view).setBackgroundTintList(ColorStateList.valueOf(Color.YELLOW));
+            ((Button) view).setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
             score++;
         } else {
             ((Button) view).setBackgroundTintList(ColorStateList.valueOf(Color.RED));
 
             switch (questionModels.get(questionNum).getCorrect()) {
                 case 1:
-                    btn1.setBackgroundTintList(ColorStateList.valueOf(Color.YELLOW));
+                    btn1.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
                     break;
                 case 2:
-                    btn2.setBackgroundTintList(ColorStateList.valueOf(Color.YELLOW));
+                    btn2.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
                     break;
                 case 3:
-                    btn3.setBackgroundTintList(ColorStateList.valueOf(Color.YELLOW));
+                    btn3.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
                     break;
                 case 4:
-                    btn4.setBackgroundTintList(ColorStateList.valueOf(Color.YELLOW));
+                    btn4.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
                     break;
             }
         }
@@ -239,6 +239,7 @@ public class Questions extends AppCompatActivity implements View.OnClickListener
         } else {
             Intent intent = new Intent(Questions.this, Score.class);
             intent.putExtra("SCORE", String.valueOf(score) + "/" + String.valueOf(questionModels.size()));
+            intent.putExtra("passing", String.valueOf(questionModels.size()));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
 
