@@ -13,14 +13,21 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 public class TopicActivity extends AppCompatActivity {
 
     FirebaseFirestore firestore;
     TextView topicTitle, topicContent;
     Button questionBtn;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +38,29 @@ public class TopicActivity extends AppCompatActivity {
         topicContent = findViewById(R.id.topicContent);
 
         topicContent.setMovementMethod(new ScrollingMovementMethod());
+
         firestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
 
         questionBtn = findViewById(R.id.qBtn);
+
+
+        DocumentReference documentReference = firestore.collection("Quizzes").document(moduleId).collection(subId).document("Quiz_Taker");
+
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                   String checkCurrentQuizzer = documentSnapshot.getString(firebaseUser.getUid());
+                    if (Objects.equals(checkCurrentQuizzer, String.valueOf(firebaseAuth.getUid()))) {
+                        questionBtn.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+
 
         questionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
