@@ -32,7 +32,7 @@
         >
 
         <EditText
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textCursorDrawable="@drawable/text_cursor"
             android:id="@+id/feedbackTitle"
             android:layout_width="match_parent"
@@ -50,6 +50,7 @@
             android:layout_height="match_parent"
             android:hint="Enter your feedback"
             android:padding="10dp"
+            android:textColor="@color/black"
             android:gravity="start"/>
     </LinearLayout>
 

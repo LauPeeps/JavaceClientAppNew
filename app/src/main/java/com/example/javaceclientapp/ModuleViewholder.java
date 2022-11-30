@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,13 +15,13 @@ import java.util.List;
 
 public class ModuleViewholder extends RecyclerView.ViewHolder {
 
-    TextView moduleName;
+    TextView moduleName, progressValue;
     View view;
+    ProgressBar progressBar;
     public ModuleViewholder(@NonNull View itemView) {
         super(itemView);
 
         view = itemView;
-
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +38,8 @@ public class ModuleViewholder extends RecyclerView.ViewHolder {
             }
         });
         moduleName = itemView.findViewById(R.id.moduleName);
+        progressBar = itemView.findViewById(R.id.progressBar);
+        progressValue = itemView.findViewById(R.id.progressValue);
 
     }
 

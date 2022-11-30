@@ -2,17 +2,24 @@ package com.example.javaceclientapp;
 
 import com.google.firebase.Timestamp;
 
+import java.lang.reflect.Array;
+import java.util.List;
+
 public class ModuleModel {
+
+    public ModuleModel() {};
 
     String module_id, module_name;
     Timestamp module_created;
-    Long submodules;
+    Long submodules, user_data;
 
-    public ModuleModel(String module_id, String module_name, Timestamp module_created, Long submodules) {
+
+    public ModuleModel(String module_id, String module_name, Timestamp module_created, Long submodules, Long user_data) {
         this.module_id = module_id;
         this.module_name = module_name;
         this.module_created = module_created;
         this.submodules = submodules;
+        this.user_data = user_data;
     }
 
     public String getModule_id() {
@@ -45,5 +52,13 @@ public class ModuleModel {
 
     public void setSubmodules(Long submodules) {
         this.submodules = submodules;
+    }
+
+    public Long getUser_data() {
+        return user_data;
+    }
+
+    public void setUser_data(Long user_data) {
+        this.user_data = user_data;
     }
 }

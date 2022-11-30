@@ -1,11 +1,10 @@
 package com.example.javaceclientapp;
 
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,31 +14,25 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.AggregateQuery;
+import com.google.firebase.firestore.AggregateQuerySnapshot;
+import com.google.firebase.firestore.AggregateSource;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -50,6 +43,9 @@ public class MainActivity extends AppCompatActivity{
     ImageView logout, goToProfile, goToQuiz, goToResources, goToLeaderboard, goToFeedback, goToForum, goToAddForum, goToCompiler;
     TextView userName;
     String currentUser;
+    static String userNow;
+    static Long currentValueProgress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +143,16 @@ public class MainActivity extends AppCompatActivity{
                 userName.setText(value.getString("username"));
             }
         });
+
+        userNow = firebaseAuth.getCurrentUser().getUid();
+
+
+
+
+
+
     }
+
 
     @Override
     protected void onStart() {

@@ -1,5 +1,7 @@
 package com.example.javaceclientapp;
 
+import static com.example.javaceclientapp.Submodule.uid;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,13 +24,16 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SubmoduleAdapter extends RecyclerView.Adapter<SubmoduleViewholder> {
     static String subId;
     static  String moduleId;
     Submodule submodule;
     List<SubmoduleModel> submoduleModelList;
+
 
 
     public SubmoduleAdapter(Submodule submodule, List<SubmoduleModel> submoduleModelList) {
@@ -56,6 +61,10 @@ public class SubmoduleAdapter extends RecyclerView.Adapter<SubmoduleViewholder> 
                 intent.putExtra("subname", subName);
                 intent.putExtra("moduleid", moduleId);
 
+
+
+                //submodule.addSubmoduleProgress(moduleId, subId, position);
+                submodule.increaseProgress(moduleId, subId, position);
                 submodule.startActivity(intent);
 
             }

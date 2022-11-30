@@ -9,24 +9,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import com.example.javaceclientapp.SubmoduleAdapter;
-import com.example.javaceclientapp.SubmoduleModel;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +37,9 @@ public class Submodule extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     SubmoduleAdapter submoduleAdapter;
+    FirebaseAuth firebaseAuth;
+    static String uid;
+    static String moduleIdforMainActivity;
 
 
     @Override
@@ -53,10 +49,12 @@ public class Submodule extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         moduleId = bundle.getString("moduleid");
+        moduleIdforMainActivity = bundle.getString("moduleid");
         moduleName = bundle.getString("modulename");
         submodules = bundle.getLong("submodules");
 
         firestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         Toolbar toolbar = findViewById(R.id.submodule_toolbar);
         setSupportActionBar(toolbar);
@@ -79,6 +77,27 @@ public class Submodule extends AppCompatActivity {
 
         fetchSubmodules();
 
+      /*  Map<String, Object> map = new HashMap<>();
+        String[] arrays = {submoduleModelList.get(i).getSubmodule_id()};
+        map.put(uid, Arrays.asList(arrays));
+
+
+        firestore.collection("Quizzes").document(moduleId).update(uid, FieldValue.arrayUnion(arrays)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(Submodule.this, "Noice", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Submodule.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        */
+        uid = firebaseAuth.getCurrentUser().getUid();
+
+
     }
 
     @Override
@@ -86,6 +105,76 @@ public class Submodule extends AppCompatActivity {
         super.onResume();
         fetchSubmodules();
     }
+
+    void increaseProgress(String mid, String subid, int position) {
+
+        DocumentReference documentReference = firestore.collection("Quizzes").document(mid).collection(uid).document(moduleId);
+        DocumentReference documentReference1 = firestore.collection("Quizzes").document(mid);
+
+
+
+        Map<String, Object> data = new HashMap<>();
+        data.put(subid, subid);
+
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot.exists()) {
+                        String check = documentSnapshot.getString(subid);
+                        if (!data.containsKey(check)) {
+                            documentReference.update(data);
+                            documentReference1.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    Map<String, Object> numData = new HashMap<>();
+                                    Long currentProgress = documentSnapshot.getLong(uid);
+                                    numData.put(uid, currentProgress + 1);
+                                    documentReference1.update(numData);
+                                }
+                            });
+                        }
+
+
+                    } else {
+
+                    }
+                }
+            }
+        });
+
+    }
+
+    /* void addSubmoduleProgress(String mid, String subid, int pos) {
+        DocumentReference documentReference = firestore.collection("Quizzes").document(uid);
+
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String check = documentSnapshot.getString(subid);
+
+                Map<String, Object> data = new ArrayMap<>();
+                data.put(subid, subid);
+
+                if (!data.containsKey(check)) {
+                    firestore.collection("Quizzes").document(uid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            Long currentValue = documentSnapshot.getLong(mid);
+                            currentValue++;
+                            data.put(mid, currentValue);
+                            documentReference.update(data);
+                        }
+                    });
+
+                }
+            }
+        });
+
+    }
+
+     */
 
 
     private void fetchSubmodules() {

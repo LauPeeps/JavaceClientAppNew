@@ -12,6 +12,11 @@
         android:layout_margin="11dp"
         >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/moduleId"
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -21,15 +26,33 @@
             >
             <TextView
                 android:id="@+id/moduleName"
-                android:layout_width="wrap_content"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:text="Module Name"
                 android:textSize="21dp"
                 android:padding="11dp"
                 android:textColor="@color/white"
+                android:gravity="center_horizontal"
                 />
-
         </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:progress="0"
+            android:indeterminateOnly="false"
+            android:layout_gravity="center_vertical|center_horizontal|right"
+            android:progressDrawable="@drawable/progress_circle_indicator"
+            android:layout_margin="12dp"
+            />
+        <TextView
+            android:id="@+id/progressValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0%"
+            android:layout_gravity="center_horizontal|center_vertical|right"
+            android:layout_marginRight="27dp"
+            />
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
