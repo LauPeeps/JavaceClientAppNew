@@ -1,63 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/backgrounduser"
     tools:context=".TopicActivity">
 
 
-    <LinearLayout
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="700dp"
-        android:orientation="vertical"
+        android:layout_height="500dp"
+        />
+
+
+    <LinearLayout
+        android:id="@+id/layoutForDots"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="100dp"
+        android:gravity="center"
+
         >
-
         <TextView
-            android:layout_marginTop="20dp"
-            android:id="@+id/topicTitle"
-            android:textSize="31dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="Topic"
-            />
-
-        <View
-            android:layout_margin="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#CAA2A2"
-
-            />
-
-        <TextView
-            android:textSize="16dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:id="@+id/topicContent"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:gravity="start"
-            android:scrollbars="vertical"
-            android:padding="8dp"
-            android:text="Content"
-            android:background="@drawable/topic_background"
-            />
-
-        <Button
-            android:id="@+id/qBtn"
-            android:layout_marginTop="21dp"
+            android:id="@+id/dots"
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Take Quiz"
-            android:layout_gravity="center_horizontal"
-            android:backgroundTint="#d3b498"
-            android:textColor="@color/black"
+            android:text="Indicator"
+            android:layout_gravity="center"
             />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="left"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:text="Back"
+        android:visibility="invisible"
+        android:textColor="#75573A"
+        android:textSize="18dp" />
+    <TextView
+        android:id="@+id/nextBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:layout_gravity="right"
+        android:textSize="18dp"
+        android:textColor="#75573A"
+        android:layout_margin="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        />
 
-</LinearLayout>
+</RelativeLayout>
