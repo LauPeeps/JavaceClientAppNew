@@ -26,6 +26,9 @@ import androidx.collection.ArrayMap;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -33,6 +36,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Questions extends AppCompatActivity implements View.OnClickListener{
 
@@ -92,47 +96,46 @@ public class Questions extends AppCompatActivity implements View.OnClickListener
 
         questionModels.clear();
 
-
         firestore.collection("Quizzes").document(moduleId)
-                .collection(subId).get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        Map<String, QueryDocumentSnapshot> document_list = new ArrayMap<>();
+                            .collection(subId).get()
+                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    Map<String, QueryDocumentSnapshot> document_list = new ArrayMap<>();
 
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            document_list.put(documentSnapshot.getId(), documentSnapshot);
-                        }
-                        QueryDocumentSnapshot question_list_document = document_list.get("Question_List");
+                                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                        document_list.put(documentSnapshot.getId(), documentSnapshot);
+                                    }
+                                    QueryDocumentSnapshot question_list_document = document_list.get("Question_List");
 
-                        String questions_exist = question_list_document.getString("QNO");
+                                    String questions_exist = question_list_document.getString("QNO");
 
-                        for (int i = 0; i < Integer.valueOf(questions_exist); i++) {
-                            String question_id = question_list_document.getString("Q" + String.valueOf(i + 1) + "_Id");
+                                    for (int i = 0; i < Integer.valueOf(questions_exist); i++) {
+                                        String question_id = question_list_document.getString("Q" + String.valueOf(i + 1) + "_Id");
 
-                            QueryDocumentSnapshot queryDocumentSnapshot = document_list.get(question_id);
+                                        QueryDocumentSnapshot queryDocumentSnapshot = document_list.get(question_id);
 
-                            questionModels.add(new QuestionModel(
-                                    queryDocumentSnapshot.getString("Question"),
-                                    queryDocumentSnapshot.getString("A"),
-                                    queryDocumentSnapshot.getString("B"),
-                                    queryDocumentSnapshot.getString("C"),
-                                    queryDocumentSnapshot.getString("D"),
-                                    Integer.valueOf(queryDocumentSnapshot.getString("Correct"))
+                                        questionModels.add(new QuestionModel(
+                                                queryDocumentSnapshot.getString("Question"),
+                                                queryDocumentSnapshot.getString("A"),
+                                                queryDocumentSnapshot.getString("B"),
+                                                queryDocumentSnapshot.getString("C"),
+                                                queryDocumentSnapshot.getString("D"),
+                                                Integer.valueOf(queryDocumentSnapshot.getString("Correct"))
 
-                            ));
-                        }
+                                        ));
+                                    }
 
-                        setQuestions();
+                                    setQuestions();
 
-                        progressDialog.dismiss();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(Questions.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                                    progressDialog.dismiss();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(Questions.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
     }
 
     private void setQuestions() {
@@ -306,5 +309,7 @@ public class Questions extends AppCompatActivity implements View.OnClickListener
         super.onBackPressed();
 
         countDownTimer.cancel();
+
+
     }
 }

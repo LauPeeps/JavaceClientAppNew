@@ -73,6 +73,19 @@ public class TopicActivity extends AppCompatActivity {
                                     documentSnapshot.getString("topic"+String.valueOf(i)+"_content"));
                             topicModelList.add(topicModel);
                         }
+
+                        if (topicModelList.size() - 1 == 0) {
+                            nextForQuizBtn.setText("Finish");
+                            if (nextForQuizBtn.length() == 6) {
+                                nextForQuizBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        startActivity(new Intent(TopicActivity.this, VideoActivity.class));
+                                        finish();
+                                    }
+                                });
+                            }
+                        }
                         slideAdapter = new SlideAdapter(TopicActivity.this, topicModelList);
                         viewPager.setAdapter(slideAdapter);
                         pageIndicator(0, topicModelList.size());
@@ -93,6 +106,7 @@ public class TopicActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 viewPager.setCurrentItem(currentPage + 1);
+
             }
         });
 
@@ -126,6 +140,7 @@ public class TopicActivity extends AppCompatActivity {
         });
 
 */
+
     }
 
     private void pageIndicator(int position, int modelSize) {
@@ -165,14 +180,27 @@ public class TopicActivity extends AppCompatActivity {
 
                 nextForQuizBtn.setText("Next");
 
-            } else if(position == dotsForPage.length - 1) {
+            }
+
+            else if(position == dotsForPage.length - 1) {
                 nextForQuizBtn.setEnabled(true);
                 backForSubsBtn.setEnabled(true);
                 backForSubsBtn.setVisibility(View.VISIBLE);
 
                 nextForQuizBtn.setText("Finish");
                 backForSubsBtn.setText("Back");
-            } else {
+                if (nextForQuizBtn.length() == 6) {
+                    nextForQuizBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startActivity(new Intent(TopicActivity.this, VideoActivity.class));
+                            finish();
+                        }
+                    });
+
+                }
+            }
+            else {
                 nextForQuizBtn.setEnabled(true);
                 backForSubsBtn.setEnabled(true);
                 backForSubsBtn.setVisibility(View.VISIBLE);
