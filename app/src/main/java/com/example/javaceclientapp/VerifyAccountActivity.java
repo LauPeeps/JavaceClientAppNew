@@ -193,7 +193,7 @@ public class VerifyAccountActivity extends AppCompatActivity {
                 hashMap.put("phone", phone);
                 hashMap.put("email", email);
                 hashMap.put("user", "yes");
-                hashMap.put("image", "");
+                hashMap.put("image", "https://firebasestorage.googleapis.com/v0/b/javacemahman-10e8a.appspot.com/o/Users_Profile_Cover_image%2Fimage_oucSYp84pETqq8m2VocnmGpm2gF3?alt=media&token=5de45866-0b88-4ad2-988b-2b117a8d44cc");
 
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://javacemahman-10e8a-default-rtdb.firebaseio.com/");
                 DatabaseReference databaseReference = firebaseDatabase.getReference("Users");

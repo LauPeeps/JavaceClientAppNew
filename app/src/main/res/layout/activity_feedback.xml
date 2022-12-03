@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="Enter your title"
+            android:hint="Enter your feedback title"
             android:padding="10dp"
             android:gravity="center_horizontal"
             android:inputType="textPersonName"/>
@@ -48,7 +48,7 @@
             android:id="@+id/feedbackMessage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Enter your feedback"
+            android:hint="Message to our app"
             android:padding="10dp"
             android:textColor="@color/black"
             android:gravity="start"/>

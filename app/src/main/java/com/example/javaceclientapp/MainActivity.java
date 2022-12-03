@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity{
     TextView userName;
     String currentUser;
     static String userNow;
-    static Long currentValueProgress;
 
 
     @Override

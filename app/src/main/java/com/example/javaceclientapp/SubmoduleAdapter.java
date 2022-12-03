@@ -64,7 +64,7 @@ public class SubmoduleAdapter extends RecyclerView.Adapter<SubmoduleViewholder> 
 
 
                 //submodule.addSubmoduleProgress(moduleId, subId, position);
-                submodule.increaseProgress(moduleId, subId, position);
+              //  submodule.increaseProgress(moduleId, subId, position);
                 submodule.startActivity(intent);
 
             }

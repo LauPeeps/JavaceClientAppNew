@@ -93,7 +93,7 @@ public class Module extends AppCompatActivity {
     }
 
 
-    void startProgress(String mid, int pos) {
+   /* void startProgress(String mid, int pos) {
         DocumentReference documentReference = firestore.collection("Quizzes").document(mid).collection(userNow).document(mid);
 
         Map<String, Object> data = new HashMap<>();
@@ -118,6 +118,8 @@ public class Module extends AppCompatActivity {
        });
     }
 
+
+    */
 
 
     private void fetchModules() {

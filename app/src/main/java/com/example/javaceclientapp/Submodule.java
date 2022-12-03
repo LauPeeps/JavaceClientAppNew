@@ -106,7 +106,7 @@ public class Submodule extends AppCompatActivity {
         fetchSubmodules();
     }
 
-    void increaseProgress(String mid, String subid, int position) {
+    /* void increaseProgress(String mid, String subid, int position) {
 
         DocumentReference documentReference = firestore.collection("Quizzes").document(mid).collection(uid).document(moduleId);
         DocumentReference documentReference1 = firestore.collection("Quizzes").document(mid);
@@ -145,6 +145,8 @@ public class Submodule extends AppCompatActivity {
         });
 
     }
+
+     */
 
     /* void addSubmoduleProgress(String mid, String subid, int pos) {
         DocumentReference documentReference = firestore.collection("Quizzes").document(uid);

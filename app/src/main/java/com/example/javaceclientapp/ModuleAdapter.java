@@ -45,7 +45,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
                 intent.putExtra("modulename", moduleName);
                 intent.putExtra("submodules", submodules);
 
-                module.startProgress(moduleId, position);
+               // module.startProgress(moduleId, position);
                 module.startActivity(intent);
             }
 

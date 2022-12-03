@@ -1,5 +1,7 @@
 package com.example.javaceclientapp;
 
+import static com.example.javaceclientapp.MainActivity.userNow;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,8 +17,13 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,23 +70,29 @@ public class Feedback extends AppCompatActivity {
                 }else {
                     progressDialog.show();
 
-                    UUID uuid = UUID.randomUUID();
-                    String uuidAsString = uuid.toString();
+                firestore.collection("Users").document(userNow).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String user = documentSnapshot.getString("username");
+                        DocumentReference documentReference = firestore.collection("Feedbacks").document();
+                        String id = documentReference.getId();
+                        Map<String, Object> feedback_data = new HashMap<>();
+                        feedback_data.put("feedback_id", id);
+                        feedback_data.put("feedback_user", user);
+                        feedback_data.put("feedback_title", feedbackTitle.getText().toString());
+                        feedback_data.put("feedback_message", feedbackMessage.getText().toString());
 
-                    DocumentReference documentReference = firestore.collection("Feedbacks").document();
-                    String id = documentReference.getId();
-                    Map<String, Object> feedback_data = new HashMap<>();
-                    feedback_data.put("feedback_id", id);
-                    feedback_data.put("feedback_title", feedbackTitle.getText().toString());
-                    feedback_data.put("feedback_message", feedbackMessage.getText().toString());
+                        documentReference.set(feedback_data);
 
-                    documentReference.set(feedback_data);
+                        progressDialog.dismiss();
+                        Toast.makeText(Feedback.this, "Feedback sent", Toast.LENGTH_SHORT).show();
 
-                    progressDialog.dismiss();
-                    Toast.makeText(Feedback.this, "Feedback sent", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(Feedback.this, MainActivity.class));
+                        finish();
+                    }
 
-                    startActivity(new Intent(Feedback.this, MainActivity.class));
-                    finish();
+                });
+
                 }
 
             }
