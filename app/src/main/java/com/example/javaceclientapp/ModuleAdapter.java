@@ -1,6 +1,10 @@
 package com.example.javaceclientapp;
 
 
+import static com.example.javaceclientapp.MainActivity.userNow;
+import static com.example.javaceclientapp.Submodule.uid;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 
 import android.view.LayoutInflater;
@@ -12,10 +16,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.List;
 
 public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
 
+    FirebaseFirestore firestore;
     Module module;
     List<ModuleModel> moduleModelList;
 
@@ -36,16 +45,19 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
         moduleViewholder.setOnClickListener(new ModuleViewholder.ListenerClicker() {
             @Override
             public void onOneClick(View view, int position) {
+                String moduleIdGive = moduleModelList.get(position).getModule_id();
                 String moduleId = moduleModelList.get(position).getModule_id();
                 String moduleName = moduleModelList.get(position).getModule_name();
                 Long submodules = moduleModelList.get(position).getSubmodules();
 
                 Intent intent = new Intent(module, Submodule.class);
+                intent.putExtra("moduleIdGive", moduleIdGive);
                 intent.putExtra("moduleid", moduleId);
                 intent.putExtra("modulename", moduleName);
                 intent.putExtra("submodules", submodules);
 
                // module.startProgress(moduleId, position);
+                module.createUserCollection(position, moduleId, moduleName);
                 module.startActivity(intent);
             }
 
@@ -63,19 +75,11 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
 
 
     @Override
-    public void onBindViewHolder(@NonNull ModuleViewholder holder, int position) {
+    public void onBindViewHolder(@NonNull ModuleViewholder holder, @SuppressLint("RecyclerView") int position) {
         holder.moduleName.setText(moduleModelList.get(position).getModule_name());
 
-            if (moduleModelList.get(position).getUser_data() == null) {
+        firestore = FirebaseFirestore.getInstance();
 
-            } else {
-                float data1 = moduleModelList.get(position).getUser_data();
-                float data2 = moduleModelList.get(position).getSubmodules();
-                float result = data1 / data2;
-                int finalResult = (int) (result * 100);
-                holder.progressValue.setText(String.valueOf(finalResult) + "%");
-                holder.progressBar.setProgress(finalResult);
-            }
 
     }
 

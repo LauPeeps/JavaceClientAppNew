@@ -79,9 +79,23 @@ public class Module extends AppCompatActivity {
         fetchModules();
 
 
+    }
 
+     void createUserCollection(int pos, String id, String name) {
+        DocumentReference documentReference = firestore.collection("Quizzes").document(id).collection(userNow).document("Progress_List");
 
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (!documentSnapshot.exists()) {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("submodules", 0);
+                    data.put("solve_exercise", "no");
 
+                    documentReference.set(data);
+                }
+            }
+        });
     }
 
 
@@ -143,6 +157,7 @@ public class Module extends AppCompatActivity {
                 moduleAdapter = new ModuleAdapter(Module.this, moduleModelList);
 
                 recyclerView.setAdapter(moduleAdapter);
+
 
             }
         }).addOnFailureListener(new OnFailureListener() {

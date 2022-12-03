@@ -20,6 +20,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,12 +99,56 @@ public class Submodule extends AppCompatActivity {
         uid = firebaseAuth.getCurrentUser().getUid();
 
 
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         fetchSubmodules();
+    }
+
+    void dualStateProgress(int position, String subModuleId) {
+        DocumentReference documentReference1 = firestore.collection("Quizzes").document(moduleId).collection(subModuleId).document(uid);
+        DocumentReference documentReference2 = firestore.collection("Quizzes").document(moduleId).collection(uid).document(subModuleId);
+        DocumentReference documentReference3 = firestore.collection("Quizzes").document(moduleId).collection(uid).document("Progress_List");
+        Map<String, Object> data1 = new HashMap<>();
+        data1.put(uid, uid);
+        documentReference1.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (!documentSnapshot.exists()) {
+                    documentReference1.set(data1);
+
+                    Map<String, Object> data2 = new HashMap<>();
+                    data2.put(subModuleId, subModuleId);
+
+                    documentReference2.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (!documentSnapshot.exists()) {
+                                documentReference2.set(data2);
+
+                                documentReference3.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        if (documentSnapshot.exists()) {
+                                            Long submodulesNow = documentSnapshot.getLong("submodules");
+                                            Map<String, Object> data3 = new HashMap<>();
+                                            data3.put("submodules", submodulesNow + 1);
+
+                                            documentReference3.update(data3);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
     }
 
     /* void increaseProgress(String mid, String subid, int position) {

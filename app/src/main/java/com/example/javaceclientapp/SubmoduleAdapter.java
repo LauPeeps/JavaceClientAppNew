@@ -1,11 +1,14 @@
 package com.example.javaceclientapp;
 
+import static com.example.javaceclientapp.MainActivity.userNow;
+import static com.example.javaceclientapp.Submodule.moduleIdforMainActivity;
 import static com.example.javaceclientapp.Submodule.uid;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +26,8 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +38,7 @@ public class SubmoduleAdapter extends RecyclerView.Adapter<SubmoduleViewholder> 
     static  String moduleId;
     Submodule submodule;
     List<SubmoduleModel> submoduleModelList;
-
+    FirebaseFirestore firestore;
 
 
     public SubmoduleAdapter(Submodule submodule, List<SubmoduleModel> submoduleModelList) {
@@ -61,8 +66,7 @@ public class SubmoduleAdapter extends RecyclerView.Adapter<SubmoduleViewholder> 
                 intent.putExtra("subname", subName);
                 intent.putExtra("moduleid", moduleId);
 
-
-
+                submodule.dualStateProgress(position, subId);
                 //submodule.addSubmoduleProgress(moduleId, subId, position);
               //  submodule.increaseProgress(moduleId, subId, position);
                 submodule.startActivity(intent);
@@ -84,6 +88,18 @@ public class SubmoduleAdapter extends RecyclerView.Adapter<SubmoduleViewholder> 
     @Override
     public void onBindViewHolder(@NonNull SubmoduleViewholder holder, int position) {
         holder.subModuleName.setText(submoduleModelList.get(position).getSubmodule_id());
+
+        firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Quizzes").document(submodule.moduleId).collection(uid).document(submoduleModelList.get(position).getSubmodule_id()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    holder.tractCurrentUserState.setImageResource(R.drawable.check);
+                } else {
+                    holder.tractCurrentUserState.setImageResource(R.drawable.x);
+                }
+            }
+        });
     }
 
     @Override
