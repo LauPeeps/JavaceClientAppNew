@@ -23,13 +23,22 @@
                 android:id="@+id/moduleName"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:text="Module Name"
+                android:text="Submodule Name"
                 android:textSize="21dp"
                 android:padding="11dp"
-                android:textColor="@color/white"
+                android:textColor="#F3EC7E"
                 android:gravity="center_horizontal"
                 />
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/trackStateUser"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/x"
+            android:layout_gravity="center_vertical|center_horizontal|right"
+            android:layout_margin="8dp"
+            />
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

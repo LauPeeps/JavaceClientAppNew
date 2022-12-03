@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgrounduser"
+    tools:context=".PracticeExercise">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/practiceExer_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:background="#262433"
+        />
+
+    <LinearLayout
+        android:id="@+id/layoutForExercises"
+        android:layout_below="@id/practiceExer_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:orientation="vertical"
+
+        >
+        <TextView
+            android:id="@+id/exerciseTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:text="Title"
+            android:textStyle="bold"
+            android:scrollbars="vertical"
+            android:height="50dp"
+            android:background="@drawable/edit_text_background"
+            android:layout_margin="8dp"
+            android:padding="4dp"
+            />
+        <TextView
+            android:gravity="start"
+            android:id="@+id/exerciseInstruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Instruction"
+            android:layout_margin="5dp"
+            android:textSize="17dp"
+            android:padding="14dp"
+            android:scrollbars="vertical"
+            android:height="100dp"
+            android:background="@drawable/edit_text_background"
+            />
+
+        <TextView
+            android:id="@+id/exerciseProblem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="17dp"
+            android:text="Problem"
+            android:padding="30dp"
+            android:height="250dp"
+            android:scrollbars="vertical"
+            android:gravity="start"
+            android:background="@drawable/edit_text_background"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutForAnswers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/layoutForExercises"
+        >
+        <EditText
+            android:textCursorDrawable="@drawable/text_cursor"
+            android:id="@+id/answer1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Answer 1"
+            android:padding="4dp"
+            android:layout_marginLeft="4dp"
+            android:height="50dp"
+            android:scrollbars="vertical"
+            />
+        <EditText
+            android:textCursorDrawable="@drawable/text_cursor"
+            android:id="@+id/answer2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Answer 2"
+            android:padding="4dp"
+            android:layout_marginLeft="4dp"
+            android:height="50dp"
+            android:scrollbars="vertical"
+            />
+
+        <EditText
+            android:textCursorDrawable="@drawable/text_cursor"
+            android:id="@+id/answer3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Answer 3"
+            android:padding="4dp"
+            android:layout_marginLeft="4dp"
+            android:height="50dp"
+            android:scrollbars="vertical"
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/submitExercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:text="Submit Answer"
+        android:textSize="13dp"
+        android:textColor="#F3EC7E"
+        android:backgroundTint="#d3b498"
+        android:layout_alignParentBottom="true"
+        />
+
+
+
+</RelativeLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#222020">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="21dp"
+        android:orientation="vertical"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/practice_exercise_trophy"
+            android:layout_gravity="center_horizontal"
+            />
+        <TextView
+            android:id="@+id/congratsWho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:text="Congratulations, User"
+            android:textSize="21dp"
+            android:layout_gravity="center_horizontal"
+            />
+        <TextView
+            android:id="@+id/conquerWhat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:text="for conquering"
+            android:textSize="21dp"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:id="@+id/doneBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Done"
+            android:backgroundTint="#352929"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

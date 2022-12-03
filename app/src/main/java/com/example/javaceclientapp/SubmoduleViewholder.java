@@ -1,6 +1,7 @@
 package com.example.javaceclientapp;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SubmoduleViewholder extends RecyclerView.ViewHolder {
 
     TextView subModuleName;
+    ImageView tractCurrentUserState;
     View view;
 
     public SubmoduleViewholder(@NonNull View itemView) {
@@ -31,6 +33,7 @@ public class SubmoduleViewholder extends RecyclerView.ViewHolder {
             }
         });
         subModuleName = itemView.findViewById(R.id.moduleName);
+        tractCurrentUserState = itemView.findViewById(R.id.trackStateUser);
 
     }
     private SubmoduleViewholder.ListenerClicker listenerClicker;

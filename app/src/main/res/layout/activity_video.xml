@@ -21,7 +21,7 @@
         android:layout_marginHorizontal="50dp"
         android:text="Take Quiz"
         android:textSize="18dp"
-        android:textColor="@color/black"
+        android:textColor="#F3EC7E"
         android:backgroundTint="#d3b498"
         android:layout_alignParentBottom="true"
         />

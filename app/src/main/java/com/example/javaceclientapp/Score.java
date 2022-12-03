@@ -121,7 +121,7 @@ public class Score extends AppCompatActivity {
                             Toast.makeText(Score.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-                    Intent intent = new Intent(Score.this, MainActivity.class);
+                    Intent intent = new Intent(Score.this, PracticeExercise.class);
                     Score.this.startActivity(intent);
                     Score.this.finish();
                 }
