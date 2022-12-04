@@ -25,5 +25,17 @@
         android:backgroundTint="#d3b498"
         android:layout_alignParentBottom="true"
         />
+    <Button
+        android:id="@+id/proceedTo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:text="Show Message"
+        android:textSize="18dp"
+        android:textColor="#F3EC7E"
+        android:backgroundTint="#d3b498"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        />
 
 </RelativeLayout>

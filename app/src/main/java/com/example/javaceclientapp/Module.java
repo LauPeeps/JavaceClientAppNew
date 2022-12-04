@@ -89,18 +89,12 @@ public class Module extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         fetchModules();
     }
 
-
-     void fetchOverallProgress() {
+    void fetchOverallProgress() {
         firestore.collection("Users").document(userNow).collection(userNow).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

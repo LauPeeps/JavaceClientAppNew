@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
 
    <TextView
@@ -14,19 +14,39 @@
        android:textSize="35dp"
        android:gravity="center"
        android:layout_marginTop="50dp"
+       android:textColor="@color/black"
       />
 
-   <TextView
+   <androidx.cardview.widget.CardView
        android:layout_below="@id/titleOf"
-       android:id="@+id/contentOf"
        android:layout_width="match_parent"
-       android:layout_height="300dp"
-       android:text="Content"
-       android:textSize="18dp"
-       android:gravity="center"
-       android:scrollbars="vertical"
-       android:layout_marginTop="50dp"
-       android:background="@drawable/topic_background"
-       />
+       android:layout_height="400dp"
+       app:cardBackgroundColor="@android:color/transparent"
+       app:cardElevation="0dp"
+      >
+      <ImageView
+          android:id="@+id/projector"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+         android:src="@drawable/projector"
+         />
+      <TextView
+          android:id="@+id/contentOf"
+          android:layout_width="wrap_content"
+          android:layout_height="205dp"
+          android:width="320dp"
+          android:text="Content"
+          android:textSize="16dp"
+          android:gravity="start"
+          android:scrollbars="vertical"
+          android:layout_marginTop="50dp"
+          android:padding="10dp"
+          android:layout_marginHorizontal="50dp"
+          android:textColor="@color/black"
+          />
+
+   </androidx.cardview.widget.CardView>
+
+
 
 </RelativeLayout>

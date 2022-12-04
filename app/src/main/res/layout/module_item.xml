@@ -34,7 +34,6 @@
             android:id="@+id/progressBar"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:progress="0"
             android:indeterminateOnly="false"
             android:layout_gravity="center_vertical|center_horizontal|right"
             android:progressDrawable="@drawable/progress_circle_indicator"

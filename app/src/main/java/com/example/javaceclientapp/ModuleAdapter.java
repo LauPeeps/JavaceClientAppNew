@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -89,8 +90,6 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
 
         firestore = FirebaseFirestore.getInstance();
 
-        DocumentReference documentReference = firestore.collection("Users").document(userNow).collection(userNow).document(moduleModelList.get(position).getModule_id());
-
         firestore.collection("Quizzes").document(moduleModelList.get(position).getModule_id()).collection(userNow).document("Progress_List").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -104,17 +103,13 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             if (documentSnapshot.exists()) {
                                 Long subsAvailable = documentSnapshot.getLong("submodules");
+
                                 float data1 = (float) subsViewed;
                                 float data2 = (float) subsAvailable;
                                 int result = (int) (data1 / data2 * 100);
-
                                 holder.progressBar.setProgress(result);
                                 holder.progressValue.setText(String.valueOf(result) + "%");
 
-
-                                if (subsAvailable == 0) {
-                                    holder.progressBar.setProgress(0);
-                                }
                             }
                         }
                     });

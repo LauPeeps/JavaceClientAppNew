@@ -148,5 +148,20 @@ public class PracticeExercise extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            startActivity(new Intent(PracticeExercise.this, MainActivity.class));
+            finish();
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(PracticeExercise.this, MainActivity.class));
+        finish();
+    }
 }

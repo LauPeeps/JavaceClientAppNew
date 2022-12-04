@@ -97,9 +97,8 @@ public class Score extends AppCompatActivity {
                                     Map<String, Object> score_data = new HashMap<>();
                                     score_data.put("score", recordScore);
                                     documentReference.update(score_data);
-                                    Toast.makeText(Score.this, "Score recorded", Toast.LENGTH_SHORT).show();
 
-                                    /* DocumentReference documentReference1 = firestore.collection("Quizzes").document(moduleId).collection(subId).document("Quiz_Taker");
+                                    DocumentReference documentReference1 = firestore.collection("Quizzes").document(moduleId).collection(subId).document("Quiz_Taker");
                                     documentReference1.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -112,8 +111,7 @@ public class Score extends AppCompatActivity {
                                             Toast.makeText(Score.this, "Score recorded", Toast.LENGTH_SHORT).show();
                                         }
                                     });
-
-                                     */
+                                    
                                 }
                             }
                         }
