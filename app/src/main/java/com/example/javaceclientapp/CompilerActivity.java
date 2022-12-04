@@ -2,6 +2,7 @@ package com.example.javaceclientapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.webkit.WebSettings;
@@ -30,5 +31,12 @@ public class CompilerActivity extends AppCompatActivity {
         public boolean shouldOverrideKeyEvent(WebView view, KeyEvent event) {
             return false;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(CompilerActivity.this, MainActivity.class));
+        finish();
     }
 }

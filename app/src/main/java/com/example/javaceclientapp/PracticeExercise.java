@@ -33,7 +33,7 @@ public class PracticeExercise extends AppCompatActivity {
     Dialog progressDialog, addPage;
     TextView exerciseTitle, exerciseInstruction, exerciseProblem;
     EditText answer1, answer2, answer3;
-    Button submitExerciseBtn, doneBtn;
+    Button submitExerciseBtn, doneBtn, practicePlayground;
     TextView who, what;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +56,20 @@ public class PracticeExercise extends AppCompatActivity {
         who = addPage.findViewById(R.id.congratsWho);
         what = addPage.findViewById(R.id.conquerWhat);
         doneBtn = addPage.findViewById(R.id.doneBtn);
+        practicePlayground = addPage.findViewById(R.id.practicePlayground);
 
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(PracticeExercise.this, MainActivity.class));
+                finish();
+            }
+        });
+
+        practicePlayground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PracticeExercise.this, CompilerActivity.class));
                 finish();
             }
         });
@@ -138,11 +147,6 @@ public class PracticeExercise extends AppCompatActivity {
             }
         });
     }
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
 
-        return super.onOptionsItemSelected(item);
-    }
+
 }

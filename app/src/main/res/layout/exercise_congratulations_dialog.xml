@@ -44,6 +44,15 @@
             android:backgroundTint="#352929"
             android:layout_gravity="center"
             />
+        <Button
+
+            android:id="@+id/practicePlayground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Practice Playground"
+            android:backgroundTint="#352929"
+            android:layout_gravity="center"
+            />
 
     </LinearLayout>
 
