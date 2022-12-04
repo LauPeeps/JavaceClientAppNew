@@ -31,7 +31,7 @@ import java.util.Objects;
 public class Submodule extends AppCompatActivity {
 
     Dialog progressDialog;
-    String moduleId, moduleName;
+    String moduleId;
     Long submodules;
     FirebaseFirestore firestore;
     List<SubmoduleModel> submoduleModelList = new ArrayList<>();
@@ -41,6 +41,7 @@ public class Submodule extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     static String uid;
     static String moduleIdforMainActivity;
+    static String moduleName;
 
 
     @Override
@@ -100,8 +101,9 @@ public class Submodule extends AppCompatActivity {
 
 
 
-
     }
+
+
 
     @Override
     protected void onResume() {

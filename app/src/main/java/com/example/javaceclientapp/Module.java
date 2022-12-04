@@ -1,5 +1,8 @@
 package com.example.javaceclientapp;
 
+import static com.example.javaceclientapp.MainActivity.userNow;
+import static com.example.javaceclientapp.Submodule.moduleName;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -77,30 +80,31 @@ public class Module extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         userNow = firebaseAuth.getCurrentUser().getUid();
-
         fetchModules();
 
         progressBar = findViewById(R.id.overallProgress);
         overallText = findViewById(R.id.overallProgressText);
 
 
-        fetchOverallProgress();
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        fetchOverallProgress();
+    protected void onStart() {
+        super.onStart();
     }
 
-    private void fetchOverallProgress() {
-        progressDialog.show();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchModules();
+    }
+
+
+     void fetchOverallProgress() {
         firestore.collection("Users").document(userNow).collection(userNow).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                fetchModules();
                 overall.clear();
-                progressDialog.dismiss();
                 int total = 0;
                 for (DocumentSnapshot documentSnapshot : task.getResult()) {
                     if (documentSnapshot.exists()) {
@@ -118,8 +122,10 @@ public class Module extends AppCompatActivity {
         });
     }
 
+
      void createUserCollection(int pos, String id, String name) {
-        DocumentReference documentReference = firestore.collection("Quizzes").document(id).collection(userNow).document("Progress_List");
+         DocumentReference documentReference = firestore.collection("Quizzes").document(id).collection(userNow).document("Progress_List");
+         DocumentReference documentReference1 = firestore.collection("Users").document(userNow).collection(userNow).document(id);
 
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -130,18 +136,22 @@ public class Module extends AppCompatActivity {
                     data.put("solve_exercise", "no");
 
                     documentReference.set(data);
+
+                    documentReference1.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (!documentSnapshot.exists()) {
+                                Map<String, Object> data = new HashMap<>();
+                                data.put("module_id", id);
+                                data.put("module_name", name);
+                                data.put("progress", 0);
+                                documentReference1.set(data);
+                            }
+                        }
+                    });
                 }
             }
         });
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        fetchModules();
-        fetchOverallProgress();
-
     }
 
 
@@ -188,8 +198,7 @@ public class Module extends AppCompatActivity {
                     ModuleModel moduleModel = new ModuleModel(documentSnapshot.getString("module_id"),
                             documentSnapshot.getString("module_name"),
                             documentSnapshot.getTimestamp("module_created"),
-                            documentSnapshot.getLong("submodules"),
-                            documentSnapshot.getLong(userNow));
+                            documentSnapshot.getLong("submodules"));
                     moduleModelList.add(moduleModel);
                 }
                 moduleAdapter = new ModuleAdapter(Module.this, moduleModelList);

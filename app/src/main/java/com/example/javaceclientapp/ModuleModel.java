@@ -11,15 +11,15 @@ public class ModuleModel {
 
     String module_id, module_name;
     Timestamp module_created;
-    Long submodules, user_data;
+    Long submodules;
 
 
-    public ModuleModel(String module_id, String module_name, Timestamp module_created, Long submodules, Long user_data) {
+    public ModuleModel(String module_id, String module_name, Timestamp module_created, Long submodules) {
         this.module_id = module_id;
         this.module_name = module_name;
         this.module_created = module_created;
         this.submodules = submodules;
-        this.user_data = user_data;
+
     }
 
     public String getModule_id() {
@@ -54,11 +54,4 @@ public class ModuleModel {
         this.submodules = submodules;
     }
 
-    public Long getUser_data() {
-        return user_data;
-    }
-
-    public void setUser_data(Long user_data) {
-        this.user_data = user_data;
-    }
 }

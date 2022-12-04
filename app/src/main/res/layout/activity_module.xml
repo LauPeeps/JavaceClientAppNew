@@ -15,8 +15,9 @@
         android:background="#262433"
         >
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="right"
             >
             <ProgressBar
                 android:id="@+id/overallProgress"
@@ -33,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0%"
-                android:textSize="15dp"
+                android:textSize="14dp"
                 android:layout_alignLeft="@id/overallProgress"
                 android:layout_alignRight="@id/overallProgress"
                 android:layout_alignTop="@id/overallProgress"

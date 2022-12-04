@@ -2,6 +2,7 @@ package com.example.javaceclientapp;
 
 import static com.example.javaceclientapp.MainActivity.userNow;
 import static com.example.javaceclientapp.Submodule.moduleIdforMainActivity;
+import static com.example.javaceclientapp.Submodule.moduleName;
 import static com.example.javaceclientapp.Submodule.uid;
 
 import android.app.AlertDialog;
@@ -26,6 +27,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -87,6 +89,49 @@ public class SubmoduleAdapter extends RecyclerView.Adapter<SubmoduleViewholder> 
     @Override
     public void onBindViewHolder(@NonNull SubmoduleViewholder holder, int position) {
         holder.subModuleName.setText(submoduleModelList.get(position).getSubmodule_id());
+
+
+        firestore = FirebaseFirestore.getInstance();
+
+        DocumentReference documentReference = firestore.collection("Users").document(userNow).collection(userNow).document(moduleIdforMainActivity);
+
+        firestore.collection("Quizzes").document(moduleIdforMainActivity).collection(userNow).document("Progress_List").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    Long subsViewed = documentSnapshot.getLong("submodules");
+                    firestore.collection("Quizzes").document(moduleIdforMainActivity).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
+                                Long subsAvailable = documentSnapshot.getLong("submodules");
+                                float data1 = (float) subsViewed;
+                                float data2 = (float) subsAvailable;
+                                int result = (int) (data1 / data2 * 100);
+
+                                Map<String, Object> data = new HashMap<>();
+                                data.put("module_id", moduleIdforMainActivity);
+                                data.put("module_name", moduleName);
+                                data.put("progress", result);
+
+                                documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        if (documentSnapshot.exists()) {
+                                            documentReference.update(data);
+                                        } else {
+                                            documentReference.set(data);
+                                        }
+                                    }
+                                });
+
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
 
         firestore = FirebaseFirestore.getInstance();
         firestore.collection("Quizzes").document(submodule.moduleId).collection(uid).document(submoduleModelList.get(position).getSubmodule_id()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

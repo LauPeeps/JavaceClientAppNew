@@ -85,6 +85,8 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
     public void onBindViewHolder(@NonNull ModuleViewholder holder, @SuppressLint("RecyclerView") int position) {
         holder.moduleName.setText(moduleModelList.get(position).getModule_name());
 
+        module.fetchOverallProgress();
+
         firestore = FirebaseFirestore.getInstance();
 
         DocumentReference documentReference = firestore.collection("Users").document(userNow).collection(userNow).document(moduleModelList.get(position).getModule_id());
@@ -92,7 +94,10 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
         firestore.collection("Quizzes").document(moduleModelList.get(position).getModule_id()).collection(userNow).document("Progress_List").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
+                if (!documentSnapshot.exists()) {
+                    holder.progressBar.setProgress(0);
+                    holder.progressValue.setText("0%");
+                } else {
                     Long subsViewed = documentSnapshot.getLong("submodules");
                     firestore.collection("Quizzes").document(moduleModelList.get(position).getModule_id()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
@@ -106,22 +111,10 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
                                 holder.progressBar.setProgress(result);
                                 holder.progressValue.setText(String.valueOf(result) + "%");
 
-                                Map<String, Object> data = new HashMap<>();
-                                data.put("module_id", moduleModelList.get(position).getModule_id());
-                                data.put("module_name", moduleModelList.get(position).getModule_name());
-                                data.put("progress", result);
 
-                                documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                        if (documentSnapshot.exists()) {
-                                            documentReference.update(data);
-                                        } else {
-                                            documentReference.set(data);
-                                        }
-                                    }
-                                });
-
+                                if (subsAvailable == 0) {
+                                    holder.progressBar.setProgress(0);
+                                }
                             }
                         }
                     });
