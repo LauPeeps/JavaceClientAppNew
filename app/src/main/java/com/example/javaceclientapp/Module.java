@@ -10,6 +10,8 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,9 +42,10 @@ import java.util.Objects;
 public class Module extends AppCompatActivity {
     Dialog progressDialog;
     FirebaseFirestore firestore;
-    static Long currentValueProgress = 2L;
     static  String userNow;
-    static Long progressNumber;
+    ProgressBar progressBar;
+    List<Long> overall = new ArrayList<>();
+    TextView overallText;
 
 
     List<ModuleModel> moduleModelList = new ArrayList<>();
@@ -73,12 +76,46 @@ public class Module extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
         userNow = firebaseAuth.getCurrentUser().getUid();
 
         fetchModules();
 
+        progressBar = findViewById(R.id.overallProgress);
+        overallText = findViewById(R.id.overallProgressText);
 
+
+        fetchOverallProgress();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        fetchOverallProgress();
+    }
+
+    private void fetchOverallProgress() {
+        progressDialog.show();
+        firestore.collection("Users").document(userNow).collection(userNow).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                fetchModules();
+                overall.clear();
+                progressDialog.dismiss();
+                int total = 0;
+                for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                    if (documentSnapshot.exists()) {
+                         Long progressInFs = documentSnapshot.getLong("progress");
+                         overall.add(progressInFs); //100 66
+                    }
+                }
+                for (int i = 0; i < overall.size(); i++) {
+                    total += overall.get(i);
+                    int totalOf = total / overall.size();
+                    progressBar.setProgress(totalOf);
+                    overallText.setText(String.valueOf(totalOf) + "%");
+                }
+            }
+        });
     }
 
      void createUserCollection(int pos, String id, String name) {
@@ -103,6 +140,7 @@ public class Module extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         fetchModules();
+        fetchOverallProgress();
 
     }
 

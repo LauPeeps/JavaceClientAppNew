@@ -67,31 +67,31 @@ public class TopicActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        long topics = documentSnapshot.getLong("topic_exist");
-                        for (int i = 1; i <= topics; i++) {
-                            TopicModel topicModel = new TopicModel(documentSnapshot.getString("topic" +String.valueOf(i)+"_title"),
-                                    documentSnapshot.getString("topic"+String.valueOf(i)+"_content"));
-                            topicModelList.add(topicModel);
-                        }
-
-                        if (topicModelList.size() - 1 == 0) {
-                            nextForQuizBtn.setText("Finish");
-                            if (nextForQuizBtn.length() == 6) {
-                                nextForQuizBtn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        startActivity(new Intent(TopicActivity.this, VideoActivity.class));
-                                        finish();
-                                    }
-                                });
+                        if (documentSnapshot.exists()) {
+                            long topics = documentSnapshot.getLong("topic_exist");
+                            for (int i = 1; i <= topics; i++) {
+                                TopicModel topicModel = new TopicModel(documentSnapshot.getString("topic" +String.valueOf(i)+"_title"),
+                                        documentSnapshot.getString("topic"+String.valueOf(i)+"_content"));
+                                topicModelList.add(topicModel);
                             }
+
+                            if (topicModelList.size() - 1 == 0) {
+                                nextForQuizBtn.setText("Finish");
+                                if (nextForQuizBtn.length() == 6) {
+                                    nextForQuizBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            startActivity(new Intent(TopicActivity.this, VideoActivity.class));
+                                            finish();
+                                        }
+                                    });
+                                }
+                            }
+                            slideAdapter = new SlideAdapter(TopicActivity.this, topicModelList);
+                            viewPager.setAdapter(slideAdapter);
+                            pageIndicator(0, topicModelList.size());
+                            viewPager.addOnPageChangeListener(onPageChangeListener);
                         }
-                        slideAdapter = new SlideAdapter(TopicActivity.this, topicModelList);
-                        viewPager.setAdapter(slideAdapter);
-                        pageIndicator(0, topicModelList.size());
-                        viewPager.addOnPageChangeListener(onPageChangeListener);
-
-
                     }
                 });
 

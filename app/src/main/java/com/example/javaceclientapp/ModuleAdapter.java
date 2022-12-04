@@ -16,11 +16,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
 
@@ -79,6 +86,48 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
         holder.moduleName.setText(moduleModelList.get(position).getModule_name());
 
         firestore = FirebaseFirestore.getInstance();
+
+        DocumentReference documentReference = firestore.collection("Users").document(userNow).collection(userNow).document(moduleModelList.get(position).getModule_id());
+
+        firestore.collection("Quizzes").document(moduleModelList.get(position).getModule_id()).collection(userNow).document("Progress_List").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    Long subsViewed = documentSnapshot.getLong("submodules");
+                    firestore.collection("Quizzes").document(moduleModelList.get(position).getModule_id()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
+                                Long subsAvailable = documentSnapshot.getLong("submodules");
+                                float data1 = (float) subsViewed;
+                                float data2 = (float) subsAvailable;
+                                int result = (int) (data1 / data2 * 100);
+
+                                holder.progressBar.setProgress(result);
+                                holder.progressValue.setText(String.valueOf(result) + "%");
+
+                                Map<String, Object> data = new HashMap<>();
+                                data.put("module_id", moduleModelList.get(position).getModule_id());
+                                data.put("module_name", moduleModelList.get(position).getModule_name());
+                                data.put("progress", result);
+
+                                documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        if (documentSnapshot.exists()) {
+                                            documentReference.update(data);
+                                        } else {
+                                            documentReference.set(data);
+                                        }
+                                    }
+                                });
+
+                            }
+                        }
+                    });
+                }
+            }
+        });
 
 
     }

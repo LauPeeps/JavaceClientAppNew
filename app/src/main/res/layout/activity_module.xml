@@ -13,14 +13,44 @@
         android:layout_height="?actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         android:background="#262433"
-        />
+        >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <ProgressBar
+                android:id="@+id/overallProgress"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:progress="0"
+                android:indeterminateOnly="false"
+                android:layout_alignParentRight="true"
+                android:progressDrawable="@drawable/overall_progress_indicator"
+                />
+
+            <TextView
+                android:id="@+id/overallProgressText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0%"
+                android:textSize="15dp"
+                android:layout_alignLeft="@id/overallProgress"
+                android:layout_alignRight="@id/overallProgress"
+                android:layout_alignTop="@id/overallProgress"
+                android:layout_alignBottom="@id/overallProgress"
+                android:gravity="center"
+                />
+
+        </RelativeLayout>
+
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/module_recycler"
         android:layout_below="@id/module_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         />
 
 </RelativeLayout>
