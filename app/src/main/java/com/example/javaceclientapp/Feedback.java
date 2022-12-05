@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -37,10 +38,13 @@ public class Feedback extends AppCompatActivity {
     Button sendFeedback;
     EditText feedbackMessage, feedbackTitle;
     ProgressDialog progressDialog;
+    Dialog addPage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
+
+
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -57,6 +61,13 @@ public class Feedback extends AppCompatActivity {
         feedbackTitle = findViewById(R.id.feedbackTitle);
         feedbackMessage = findViewById(R.id.feedbackMessage);
         sendFeedback = findViewById(R.id.sendFeedbackBtn);
+
+        addPage = new Dialog(Feedback.this);
+        addPage.setContentView(R.layout.feedback_intro_dialog);
+        addPage.setCancelable(true);
+        addPage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        addPage.show();
 
         sendFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
