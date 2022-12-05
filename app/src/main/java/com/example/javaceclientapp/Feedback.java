@@ -65,7 +65,7 @@ public class Feedback extends AppCompatActivity {
         addPage = new Dialog(Feedback.this);
         addPage.setContentView(R.layout.feedback_intro_dialog);
         addPage.setCancelable(true);
-        addPage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        addPage.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         addPage.show();
 

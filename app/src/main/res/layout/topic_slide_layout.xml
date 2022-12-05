@@ -28,20 +28,21 @@
           android:id="@+id/projector"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-         android:src="@drawable/projector"
+         android:src="@drawable/board"
          />
       <TextView
           android:id="@+id/contentOf"
+          android:layout_marginLeft="10dp"
           android:layout_width="wrap_content"
-          android:layout_height="205dp"
-          android:width="320dp"
+          android:layout_height="wrap_content"
+          android:height="240dp"
+          android:width="380dp"
           android:text="Content"
           android:textSize="16dp"
           android:gravity="start"
           android:scrollbars="vertical"
-          android:layout_marginTop="50dp"
+          android:layout_marginTop="65dp"
           android:padding="10dp"
-          android:layout_marginHorizontal="50dp"
           android:textColor="@color/black"
           />
 
