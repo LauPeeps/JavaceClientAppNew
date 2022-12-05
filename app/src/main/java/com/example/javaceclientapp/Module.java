@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.AggregateQuery;
 import com.google.firebase.firestore.AggregateQuerySnapshot;
@@ -117,7 +118,7 @@ public class Module extends AppCompatActivity {
     }
 
 
-     void createUserCollection(int pos, String id, String name) {
+     void createUserCollection(int pos, String id, String name, Timestamp timestamp) {
          DocumentReference documentReference = firestore.collection("Quizzes").document(id).collection(userNow).document("Progress_List");
          DocumentReference documentReference1 = firestore.collection("Users").document(userNow).collection(userNow).document(id);
 
@@ -137,6 +138,7 @@ public class Module extends AppCompatActivity {
                             if (!documentSnapshot.exists()) {
                                 Map<String, Object> data = new HashMap<>();
                                 data.put("module_id", id);
+                                data.put("module_created", timestamp);
                                 data.put("module_name", name);
                                 data.put("progress", 0);
                                 documentReference1.set(data);

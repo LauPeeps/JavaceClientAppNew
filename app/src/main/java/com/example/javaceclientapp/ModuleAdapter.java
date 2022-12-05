@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -56,6 +57,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
                 String moduleIdGive = moduleModelList.get(position).getModule_id();
                 String moduleId = moduleModelList.get(position).getModule_id();
                 String moduleName = moduleModelList.get(position).getModule_name();
+                Timestamp timestamp = moduleModelList.get(position).getModule_created();
                 Long submodules = moduleModelList.get(position).getSubmodules();
 
                 Intent intent = new Intent(module, Submodule.class);
@@ -65,7 +67,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
                 intent.putExtra("submodules", submodules);
 
                // module.startProgress(moduleId, position);
-                module.createUserCollection(position, moduleId, moduleName);
+                module.createUserCollection(position, moduleId, moduleName, timestamp);
                 module.startActivity(intent);
             }
 
