@@ -1,14 +1,14 @@
 package com.example.javaceclientapp;
 
-public class ModelLeaderboard {
+public class LeaderboardModel {
 
     private String username;
     private String score;
 
-    public ModelLeaderboard() {}
+    public LeaderboardModel() {}
 
 
-    public ModelLeaderboard(String username, String score) {
+    public LeaderboardModel(String username, String score) {
         this.username = username;
         this.score = score;
     }

@@ -24,15 +24,19 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Leaderboard extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    ArrayList<ModelLeaderboard> modelLeaderboardArrayList;
-    AdapterLeaderboard adapterLeaderboard;
-    FirebaseFirestore firestore;
     ProgressDialog progressDialog;
+
+    List<LeaderboardModel> leaderboardModelList = new ArrayList<>();
+    RecyclerView.LayoutManager layoutManager;
+    LeaderboardAdapter leaderboardAdapter;
+    FirebaseFirestore firestore;
+
 
 
     @Override
@@ -49,22 +53,12 @@ public class Leaderboard extends AppCompatActivity {
         progressDialog.setMessage("Fetching leaderboards data...");
         progressDialog.setCanceledOnTouchOutside(false);
 
+        firestore = FirebaseFirestore.getInstance();
+
         recyclerView = findViewById(R.id.leaderboardRecycle);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        firestore = FirebaseFirestore.getInstance();
-        modelLeaderboardArrayList = new ArrayList<ModelLeaderboard>();
-        adapterLeaderboard = new AdapterLeaderboard(Leaderboard.this, modelLeaderboardArrayList);
-
-        recyclerView.setAdapter(adapterLeaderboard);
-
-
-
-        fetchLeaderboard();
-
-
-
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -75,28 +69,24 @@ public class Leaderboard extends AppCompatActivity {
 
     private void fetchLeaderboard() {
         progressDialog.show();
-        firestore.collection("Users").orderBy("score", Query.Direction.DESCENDING)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        modelLeaderboardArrayList.clear();
-                        if (error != null) {
-                            if (progressDialog.isShowing())
-                                progressDialog.dismiss();
-                            Toast.makeText(Leaderboard.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        for (DocumentChange documentChange : value.getDocumentChanges()) {
-                            if (documentChange.getType() == DocumentChange.Type.ADDED || documentChange.getType() == DocumentChange.Type.MODIFIED) {
-                                modelLeaderboardArrayList.add(documentChange.getDocument().toObject(ModelLeaderboard.class));
-                            }
-                            adapterLeaderboard.notifyDataSetChanged();
-                            if (progressDialog.isShowing())
-                                progressDialog.dismiss();
-                        }
-                    }
-                });
+        firestore.collection("Users").orderBy("score", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                leaderboardModelList.clear();
+                progressDialog.dismiss();
+                for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                    LeaderboardModel leaderboardModel = new LeaderboardModel(documentSnapshot.getString("username"),
+                            documentSnapshot.getString("score"));
+                    leaderboardModelList.add(leaderboardModel);
+                }
+                leaderboardAdapter = new LeaderboardAdapter(Leaderboard.this, leaderboardModelList);
+
+                recyclerView.setAdapter(leaderboardAdapter);
+            }
+        });
     }
+
+
 
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
