@@ -106,19 +106,19 @@ public class VideoActivity extends AppCompatActivity {
             }
         });
 
-
+        DocumentReference documentReference = firestore.collection("Quizzes").document(moduleId).collection(subId).document("Question_List");
         DocumentReference documentReference1 = firestore.collection("Quizzes").document(moduleId).collection(subId).document("Quiz_Taker");
         DocumentReference documentReference2 = firestore.collection("Quizzes").document(moduleId).collection(subId).document("Exercise_List");
 
         documentReference1.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
+                if (documentSnapshot.exists()) { // quiz taker
                     String quizzerNow1 = documentSnapshot.getString(userNow);
                     documentReference2.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            if (documentSnapshot.exists()) {
+                            if (documentSnapshot.exists()) { //exercise list
                                 String quizzerNow2 = documentSnapshot.getString(userNow);
                                 if (Objects.equals(quizzerNow1, userNow)) { // pag naka quiz pero wala naka exercise
                                     takeQuiz.setVisibility(View.GONE);
@@ -131,8 +131,19 @@ public class VideoActivity extends AppCompatActivity {
                                     addPage.show();
                                 }
                             } else {
-                                takeQuiz.setVisibility(View.GONE);
-                                showMessage.setVisibility(View.VISIBLE);
+                                documentReference1.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        String checkUser = documentSnapshot.getString(userNow);
+                                        if (Objects.equals(checkUser, userNow)) {
+                                            takeQuiz.setVisibility(View.GONE);
+                                            showMessage.setVisibility(View.VISIBLE);
+                                        } else {
+                                            takeQuiz.setVisibility(View.VISIBLE);
+                                            showMessage.setVisibility(View.GONE);
+                                        }
+                                    }
+                                });
                             }
                         }
                     });
@@ -140,8 +151,6 @@ public class VideoActivity extends AppCompatActivity {
             }
         });
 
-
-        DocumentReference documentReference = firestore.collection("Quizzes").document(moduleId).collection(subId).document("Question_List");
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
