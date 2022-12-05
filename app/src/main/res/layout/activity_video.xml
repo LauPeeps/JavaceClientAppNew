@@ -16,26 +16,43 @@
 
     <Button
         android:id="@+id/showQuizActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="50dp"
-        android:text="Take Quiz"
-        android:textSize="18dp"
-        android:textColor="#F3EC7E"
-        android:backgroundTint="#d3b498"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        />
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/white"
+        android:text="Take Quiz"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
     <Button
         android:id="@+id/proceedTo"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="50dp"
         android:text="Show Message"
         android:textSize="18dp"
-        android:textColor="#F3EC7E"
-        android:backgroundTint="#d3b498"
-        android:layout_alignParentBottom="true"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/white"
+        android:layout_centerInParent="true"
         android:visibility="gone"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
+        />
+    <Button
+        android:id="@+id/takePratical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:text="Take Exercise"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/white"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
         />
 
 </RelativeLayout>

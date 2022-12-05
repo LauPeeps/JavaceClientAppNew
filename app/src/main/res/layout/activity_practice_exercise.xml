@@ -112,14 +112,15 @@
 
     <Button
         android:id="@+id/submitExercise"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="50dp"
         android:text="Submit Answer"
         android:textSize="13dp"
-        android:textColor="#F3EC7E"
-        android:backgroundTint="#d3b498"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/white"
         android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
         />
 
 

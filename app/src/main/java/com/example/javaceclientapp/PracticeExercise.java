@@ -26,6 +26,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class PracticeExercise extends AppCompatActivity {
@@ -113,6 +115,14 @@ public class PracticeExercise extends AppCompatActivity {
         submitExerciseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (answer1.getText().toString().isEmpty()) {
+                    answer1.setError("Enter code 1");
+                }if (answer2.getText().toString().isEmpty()) {
+                    answer2.setError("Enter code 2");
+                }
+                if (answer3.getText().toString().isEmpty()) {
+                    answer3.setError("Enter code 3");
+                }
                 checkAnswer(answer1.getText().toString(), answer2.getText().toString(), answer3.getText().toString());
             }
         });
@@ -122,6 +132,7 @@ public class PracticeExercise extends AppCompatActivity {
     }
 
     private void checkAnswer(String ans1, String ans2, String ans3) {
+        DocumentReference documentReference = firestore.collection("Quizzes").document(moduleId).collection(subId).document("Exercise_List");
         progressDialog.show();
         firestore.collection("Quizzes").document(moduleId).collection(subId).document("Exercise_List").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -144,6 +155,9 @@ public class PracticeExercise extends AppCompatActivity {
                     Toast.makeText(PracticeExercise.this, "Wrong code, try again", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 }
+                Map<String, Object> data = new HashMap<>();
+                data.put(userNow, userNow);
+                documentReference.update(data);
             }
         });
     }

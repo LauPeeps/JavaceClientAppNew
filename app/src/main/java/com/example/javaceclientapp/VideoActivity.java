@@ -1,6 +1,7 @@
 package com.example.javaceclientapp;
 
 import static com.example.javaceclientapp.MainActivity.userNow;
+import static com.example.javaceclientapp.Submodule.moduleIdforMainActivity;
 import static com.example.javaceclientapp.SubmoduleAdapter.moduleId;
 import static com.example.javaceclientapp.SubmoduleAdapter.subId;
 
@@ -31,7 +32,7 @@ public class VideoActivity extends AppCompatActivity {
 
     FirebaseFirestore firestore;
     YouTubePlayerView youtube_player_view;
-    Button takeQuiz, proceedTo, showMessage;
+    Button takeQuiz, proceedTo, showMessage, takePractical;
     Dialog addPage;
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -50,6 +51,8 @@ public class VideoActivity extends AppCompatActivity {
         proceedTo = addPage.findViewById(R.id.practicePlayground);
         showMessage = findViewById(R.id.proceedTo);
 
+        takePractical = findViewById(R.id.takePratical);
+
         showMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,6 +64,14 @@ public class VideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(VideoActivity.this, CompilerActivity.class));
+                finish();
+            }
+        });
+
+        takePractical.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(VideoActivity.this, PracticeExercise.class));
                 finish();
             }
         });
@@ -88,20 +99,47 @@ public class VideoActivity extends AppCompatActivity {
 
         takeQuiz = findViewById(R.id.showQuizActivity);
 
+        takeQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(VideoActivity.this, Questions.class));
+            }
+        });
+
+
         DocumentReference documentReference1 = firestore.collection("Quizzes").document(moduleId).collection(subId).document("Quiz_Taker");
+        DocumentReference documentReference2 = firestore.collection("Quizzes").document(moduleId).collection(subId).document("Exercise_List");
+
         documentReference1.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
-                    String quizzerNow = documentSnapshot.getString(userNow);
-                    if (Objects.equals(quizzerNow, userNow)) {
-                        showMessage.setVisibility(View.VISIBLE);
-                        takeQuiz.setVisibility(View.GONE);
-                        addPage.show();
-                    }
+                    String quizzerNow1 = documentSnapshot.getString(userNow);
+                    documentReference2.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
+                                String quizzerNow2 = documentSnapshot.getString(userNow);
+                                if (Objects.equals(quizzerNow1, userNow)) { // pag naka quiz pero wala naka exercise
+                                    takeQuiz.setVisibility(View.GONE);
+                                    takePractical.setVisibility(View.VISIBLE);
+                                }
+                                if (Objects.equals(quizzerNow1, userNow) && Objects.equals(quizzerNow2, userNow)) { // if nahuman niya ang quiz ug exercise
+                                    showMessage.setVisibility(View.VISIBLE); //paadtog practice playground
+                                    takeQuiz.setVisibility(View.GONE); //walaon si take quiz button
+                                    takePractical.setVisibility(View.GONE); // walaon si take pratical button
+                                    addPage.show();
+                                }
+                            } else {
+                                takeQuiz.setVisibility(View.GONE);
+                                showMessage.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
                 }
             }
         });
+
 
         DocumentReference documentReference = firestore.collection("Quizzes").document(moduleId).collection(subId).document("Question_List");
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -111,15 +149,6 @@ public class VideoActivity extends AppCompatActivity {
                 if (Objects.equals(checkInAdvance, "0")) {
                     takeQuiz.setEnabled(false);
                     takeQuiz.setText("No quizzes available");
-                } else {
-                    takeQuiz.setEnabled(true);
-                    takeQuiz.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            startActivity(new Intent(VideoActivity.this, Questions.class));
-                            finish();
-                        }
-                    });
                 }
             }
         });
