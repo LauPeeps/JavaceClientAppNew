@@ -30,22 +30,29 @@
                 android:gravity="center_horizontal"
                 />
         </LinearLayout>
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:indeterminateOnly="false"
-            android:layout_gravity="center_vertical|center_horizontal|right"
-            android:progressDrawable="@drawable/progress_circle_indicator"
-            android:layout_margin="12dp"
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circle_outside"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="16dp"
             />
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circle_inside"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="21dp"
+            />
+
         <TextView
             android:id="@+id/progressValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0%"
             android:layout_gravity="center_horizontal|center_vertical|right"
-            android:layout_marginRight="23dp"
+            android:text="0%"
+            android:layout_marginRight="27dp"
             android:textSize="11dp"
             />
     </androidx.cardview.widget.CardView>

@@ -94,7 +94,6 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (!documentSnapshot.exists()) {
-                    holder.progressBar.setProgress(0);
                     holder.progressValue.setText("0%");
                 } else {
                     Long subsViewed = documentSnapshot.getLong("submodules");
@@ -107,7 +106,6 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewholder> {
                                 float data1 = (float) subsViewed;
                                 float data2 = (float) subsAvailable;
                                 int result = (int) (data1 / data2 * 100);
-                                holder.progressBar.setProgress(result);
                                 holder.progressValue.setText(String.valueOf(result) + "%");
 
                             }

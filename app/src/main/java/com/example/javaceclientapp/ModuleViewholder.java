@@ -17,7 +17,6 @@ public class ModuleViewholder extends RecyclerView.ViewHolder {
 
     TextView moduleName, progressValue;
     View view;
-    ProgressBar progressBar;
     public ModuleViewholder(@NonNull View itemView) {
         super(itemView);
 
@@ -38,7 +37,6 @@ public class ModuleViewholder extends RecyclerView.ViewHolder {
             }
         });
         moduleName = itemView.findViewById(R.id.moduleName);
-        progressBar = itemView.findViewById(R.id.progressBar);
         progressValue = itemView.findViewById(R.id.progressValue);
 
     }
