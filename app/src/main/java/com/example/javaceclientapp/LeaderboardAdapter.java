@@ -55,6 +55,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardViewhold
 
     @Override
     public void onBindViewHolder(@NonNull LeaderboardViewholder holder, int position) {
+
         holder.name.setText(leaderboardModelList.get(position).getUsername());
         holder.score.setText(leaderboardModelList.get(position).getScore());
 
@@ -66,11 +67,11 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardViewhold
             int copper = Color.parseColor("#B87333");
             holder.trophy.setColorFilter(copper);
         } if (Integer.parseInt(String.valueOf(holder.score.getText().toString())) > 50 && Integer.parseInt(String.valueOf(holder.score.getText().toString())) <= 99) {
-            int silver = Color.parseColor("#E0115F");
-            holder.trophy.setColorFilter(silver);
+            int ruby = Color.parseColor("#E0115F");
+            holder.trophy.setColorFilter(ruby);
         } if (Integer.parseInt(String.valueOf(holder.score.getText().toString())) >= 100) {
-            int gold = Color.parseColor("#E5B80B");
-            holder.trophy.setColorFilter(gold);
+            int royalNavy = Color.parseColor("#1A0076");
+            holder.trophy.setColorFilter(royalNavy);
         }
     }
 

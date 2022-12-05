@@ -59,6 +59,8 @@ public class Leaderboard extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+
+        fetchLeaderboard();
     }
 
     @Override
